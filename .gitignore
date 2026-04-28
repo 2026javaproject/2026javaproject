@@ -1,29 +1,20 @@
-# build (컴파일 결과물 및 빌드 도구)
+# ── 컴파일 결과물 ──────────────────────
 out/
 build/
-target/
-.gradle/
-bin/
+*.class
 
-# IntelliJ (IDE 설정)
+# ── 실행 JAR ───────────────────────────
+*.jar
+
+# ── IntelliJ 설정 ──────────────────────
 .idea/
-!.idea/codeStyles/
-!.idea/runConfigurations/
 *.iml
 *.iws
 *.ipr
 
-# VSCode
-.vscode/
+# ── 게임 저장 파일 ──────────────────────
+highscore.dat
 
-# OS
+# ── OS 자동생성 파일 ────────────────────
 .DS_Store
 Thumbs.db
-
-# Kotlin
-.kotlin/
-
-# Java 가비지/임시 파일
-*.log
-*.temp
-*.tmp
