@@ -295,12 +295,12 @@ DB를 사용하지 않으므로, 핵심 클래스의 필드와 파일 I/O 데이
 | 저장 위치 | JAR 실행 경로 (프로젝트 루트) |
 | 형식
 #### 메인 화면 (화면/MainMenu)
-![img.png](img.png)
+![img.png](../docs/img.png)
 
 #### 인게임 화면 (화면/GameScreen & UI/HUD)
-![img_1.png](img_1.png)
+![img_1.png](../docs/img_1.png)
 #### 게임 오버 화면 (화면/GameOver)
-![img_2.png](img_2.png)
+![img_2.png](../docs/img_2.png)
 - 5초 후 메인화면으로 자동 이동
 
 ---
