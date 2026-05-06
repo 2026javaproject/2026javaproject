@@ -257,7 +257,7 @@ DB를 사용하지 않으므로, 핵심 클래스의 필드와 파일 I/O 데이
 |:-------|:-----|:-----|:------|
 | x | int | 아이템 X 좌표 | 적 사망 위치 |
 | y | int | 아이템 Y 좌표 | 적 사망 위치 |
-| type | enum Type | 아이템 종류 | 랜덤 |
+| 입력 | enum Type | 아이템 종류 | 랜덤 |
 | speed | int | 낙하 속도 | 2 |
 | collected | boolean | 획득 여부 | false |
 | animTimer | int | 발광 애니메이션 카운터 | 0 |
@@ -295,12 +295,12 @@ DB를 사용하지 않으므로, 핵심 클래스의 필드와 파일 I/O 데이
 | 저장 위치 | JAR 실행 경로 (프로젝트 루트) |
 | 형식
 #### 메인 화면 (화면/MainMenu)
-![img.png](../docs/img.png)
+![img.png](img.png)
 
 #### 인게임 화면 (화면/GameScreen & UI/HUD)
-![img_1.png](../docs/img_1.png)
+![img_1.png](img_1.png)
 #### 게임 오버 화면 (화면/GameOver)
-![img_2.png](../docs/img_2.png)
+![img_2.png](img_2.png)
 - 5초 후 메인화면으로 자동 이동
 
 ---
