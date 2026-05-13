@@ -1,10 +1,6 @@
-# Project Architecture and Schedule
 
-이 문서는 `2_프로젝트구조및역할분담/README.md`의 내용을 제출용으로 정리한 문서이다.
 
 ---
-
-## 0. 프로젝트 개요
 
 ### 0-1. 기본 정보
 
