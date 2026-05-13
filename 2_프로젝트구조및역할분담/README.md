@@ -65,20 +65,27 @@ flowchart TD
     K --> N
     D --> N
 ```
-
 ### 1-3. 요구사항-구성요소 매핑
 
-| 요구사항 | 기능 요약 | 주요 화면/클래스 | 연관 패키지 |
+| 요구사항 ID | 기능 요약 | 주요 클래스 | 연관 패키지 |
 |---|---|---|---|
-| F-01 | 메인 메뉴 UI | `MainMenuPanel` | `screen` |
-| F-02~F-04 | 이동/발사/다중발사 | `Player`, `Bullet` | `entity` |
-| F-05~F-06 | 적 스폰/보스 패턴 | `EnemyManager`, `BossEnemy` | `manager`, `entity` |
-| F-07~F-09 | 충돌/무적/HP | `CollisionDetector`, `Player` | `manager`, `entity` |
-| F-10 | 점수/스테이지 | `ScoreManager`, `HUD` | `manager`, `ui` |
-| F-11 | 아이템 드롭/효과 | `ItemManager`, `PowerUpItem` | `manager`, `entity` |
-| F-12 | 최고점수 저장 | `HighScoreFileIO` | `util` |
-| F-13~F-16 | 그래픽/HUD/경고 연출 | `GamePanel`, `HUD` | `screen`, `ui` |
-| F-17 | 일시정지 | `GamePanel` | `screen` |
+| F-01 메인 메뉴 표시 | 시작/종료 버튼 포함 메뉴 화면 | `MainMenuPanel` | `screen` |
+| F-02 플레이어 이동 | 키보드 입력으로 상하좌우 이동 | `Player` | `entity` |
+| F-03 단발 발사 | 스페이스바로 총알 생성 | `Player`, `Bullet` | `entity` |
+| F-04 다중 발사 | 아이템 획득 시 확산 발사 | `Player`, `Bullet` | `entity` |
+| F-05 적 스폰 | 웨이브 단위로 적 자동 생성 | `EnemyManager` | `manager` |
+| F-06 보스 패턴 | 일정 처치 수 후 보스 등장·패턴 이동 | `BossEnemy`, `EnemyManager` | `entity`, `manager` |
+| F-07 충돌 판정 | 총알-적, 적-플레이어 히트박스 감지 | `CollisionDetector` | `manager` |
+| F-08 무적 시간 | 피격 후 일정 시간 무적 처리 | `Player` | `entity` |
+| F-09 HP 관리 | HP 감소 및 0 도달 시 게임오버 전환 | `Player` | `entity` |
+| F-10 점수·스테이지 | 적 처치 시 점수 증가, 조건 충족 시 스테이지 진행 | `ScoreManager`, `HUD` | `manager`, `ui` |
+| F-11 아이템 드롭·효과 | 적 처치 시 확률 드롭 및 플레이어 효과 적용 | `ItemManager`, `PowerUpItem` | `manager`, `entity` |
+| F-12 최고점수 저장 | 게임오버 시 최고점수 파일 저장·불러오기 | `HighScoreFileIO` | `util` |
+| F-13 배경 스크롤 | 배경 이미지 반복 스크롤 렌더링 | `GamePanel` | `screen` |
+| F-14 HUD 표시 | 체력·점수·스테이지 상시 표시 | `HUD` | `ui` |
+| F-15 보스 경고 연출 | 보스 등장 전 경고 메시지 표시 | `HUD`, `GamePanel` | `ui`, `screen` |
+| F-16 폭발 이펙트 | 적 파괴 시 시각 효과 | `GamePanel` | `screen` |
+| F-17 일시정지 | ESC 키로 게임 루프 일시정지·재개 | `GamePanel` | `screen` |
 
 ---
 
