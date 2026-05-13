@@ -45,21 +45,30 @@ flowchart TD
     A[GameMain<br/>프로그램 시작점] --> B[MainMenuPanel<br/>메인 메뉴]
     A --> C[GamePanel<br/>게임 루프/렌더링]
     A --> D[GameOverPanel<br/>게임오버 화면]
-
     C --> E[Player<br/>플레이어 전투기]
     C --> F[Enemy / BossEnemy<br/>적군/보스]
     C --> G[Bullet<br/>총알]
     C --> H[PowerUpItem<br/>아이템]
-
     C --> I[EnemyManager<br/>적 스폰/패턴]
     C --> J[CollisionDetector<br/>충돌 판정]
     C --> K[ScoreManager<br/>점수/스테이지]
     C --> L[ItemManager<br/>아이템 드롭/효과]
     C --> M[HUD<br/>체력/점수/스테이지 UI]
-
-    N[HighScoreFileIO<br/>파일 저장/불러오기] --> A
-    K --> N
+    K --> N[HighScoreFileIO<br/>파일 저장/불러오기]
+    A --> N
     D --> N
+
+    classDef entry fill:#2d6a4f,stroke:#1b4332,color:#fff
+    classDef screen fill:#aec6e8,stroke:#5a8fc2,color:#000
+    classDef entity fill:#f4a9a8,stroke:#c0524f,color:#000
+    classDef component fill:#c3b1e1,stroke:#7b5ea7,color:#000
+    classDef dataio fill:#f5d49a,stroke:#c9933a,color:#000
+
+    class A entry
+    class B,C,D screen
+    class E,F,G,H entity
+    class I,J,K,L,M component
+    class N dataio
 ```
 ### 1-3. 요구사항-구성요소 매핑
 
