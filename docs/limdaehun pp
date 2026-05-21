@@ -1,0 +1,16 @@
+1) MainMenuPanel.java 파일에 START GAME, HIGH SCORE, EXIT 버튼 구현
+
+src\screen 디렉터리의 mainmenupanel.java 파일에
+1. START GAME 버튼 구현
+2. HIGH SCORE 버튼 구현
+3. EXIT 버튼 구현
+4. hover 시 버튼 색상 변경 효과
+최고점수 파일이 없을시 글자를 BEST: 0 으로 표시하게 끔 패널을 작성할거야.
+입력은 마우스 클릭 과 키보드의 Enter키, space 키와 방향키(↑↓)를 통해  상, 하 조작할수 있게끔 조작할거야.
+-처리는 Rectangle.contains() 로 버튼 클릭과 입력을 받는 영역을 감지해.
+-출력은 1, 2, 3 으로 표현한 START GAME, HIGH SCORE, EXIT 버튼을 위에서 아래로 표시해줘. 사각형 테두리로.
+- 예외로 최고점수 파일 없을시 게임이 끝나 점수를 입력받는 부분은
+전체 구성한 화면에 EXIT 버튼 안에 말고 밑에 BEST: 0 이렇게 글씨로 표현해줘.
+
+
+
