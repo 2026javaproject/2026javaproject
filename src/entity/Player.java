@@ -1,7 +1,6 @@
-// entity/Player.java
-package entity;
+package com.pilot.entity;
 
-import util.GameConstants;
+import com.pilot.util.GameConstants;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,6 +16,11 @@ public class Player {
     private boolean invincible      = false;
     private int     invincibleTimer  = 0;
     private static final int INVINCIBLE_DURATION = 90;
+    
+    private int weaponLevel = 1;
+    private int speedBuffTimer = 0;
+    private static final int BASE_SPEED = 5;
+    private boolean shieldActive = false;
 
     public Player(int x, int y) {
         this.x  = x - GameConstants.PLAYER_WIDTH / 2;
@@ -25,10 +29,11 @@ public class Player {
     }
 
     public void update() {
-        if (left)  x -= GameConstants.PLAYER_SPEED;
-        if (right) x += GameConstants.PLAYER_SPEED;
-        if (up)    y -= GameConstants.PLAYER_SPEED;
-        if (down)  y += GameConstants.PLAYER_SPEED;
+        int currentSpeed = speedBuffTimer > 0 ? BASE_SPEED + 2 : BASE_SPEED;
+        if (left)  x -= currentSpeed;
+        if (right) x += currentSpeed;
+        if (up)    y -= currentSpeed;
+        if (down)  y += currentSpeed;
 
         x = Math.max(0, Math.min(x, GameConstants.SCREEN_WIDTH  - GameConstants.PLAYER_WIDTH));
         y = Math.max(0, Math.min(y, GameConstants.SCREEN_HEIGHT - GameConstants.PLAYER_HEIGHT));
@@ -37,16 +42,29 @@ public class Player {
             invincibleTimer--;
             if (invincibleTimer <= 0) invincible = false;
         }
+        
+        if (speedBuffTimer > 0) {
+            speedBuffTimer--;
+        }
     }
 
     public void shoot() {
         int bx = x + GameConstants.PLAYER_WIDTH / 2 - GameConstants.BULLET_WIDTH / 2;
-        bullets.add(new Bullet(bx, y, 0, -GameConstants.BULLET_SPEED));
-        // TODO: 다중 발사 아이템 효과 연동 (Week 2)
+        bullets.add(new Bullet(bx, y, 0, -GameConstants.BULLET_SPEED, true));
+        
+        if (weaponLevel >= 2) {
+            bullets.add(new Bullet(bx - 15, y, -2, -GameConstants.BULLET_SPEED, true));
+            bullets.add(new Bullet(bx + 15, y, 2, -GameConstants.BULLET_SPEED, true));
+        }
     }
 
     public void hit() {
-        if (invincible) return;
+        if (invincible || shieldActive) {
+            if (shieldActive) {
+                shieldActive = false;
+            }
+            return;
+        }
         hp--;
         invincible      = true;
         invincibleTimer = INVINCIBLE_DURATION;
@@ -60,15 +78,34 @@ public class Player {
         int[] py = { y,  y + GameConstants.PLAYER_HEIGHT, y + GameConstants.PLAYER_HEIGHT };
         g.setColor(new Color(125, 211, 252));
         g.fillPolygon(px, py, 3);
-        // TODO: 스프라이트 이미지로 교체 (Week 2)
+        
+        if (shieldActive) {
+            g.setColor(new Color(0, 255, 0, 100));
+            g.drawOval(cx - 25, y - 5, 50, 50);
+        }
     }
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
     }
 
+    public void addSpeedBuff(int frames) {
+        speedBuffTimer = frames;
+    }
+    
+    public void upgradeWeapon(int level) {
+        weaponLevel = Math.max(weaponLevel, level);
+    }
+    
+    public void activateShield(int durability) {
+        shieldActive = true;
+    }
+
     public List<Bullet> getBullets() { return bullets; }
     public int          getHp()      { return hp; }
+    public int          getX()       { return x; }
+    public int          getY()       { return y; }
+    public boolean      isAlive()    { return hp > 0; }
 
     public void setLeft(boolean v)  { left  = v; }
     public void setRight(boolean v) { right = v; }
