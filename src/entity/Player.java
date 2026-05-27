@@ -21,6 +21,7 @@ public class Player {
     private int speedBuffTimer = 0;
     private static final int BASE_SPEED = 5;
     private boolean shieldActive = false;
+    private int attackSpeedBuffTimer = 0;
 
     public Player(int x, int y) {
         this.x  = x - GameConstants.PLAYER_WIDTH / 2;
@@ -45,6 +46,10 @@ public class Player {
         
         if (speedBuffTimer > 0) {
             speedBuffTimer--;
+        }
+        
+        if (attackSpeedBuffTimer > 0) {
+            attackSpeedBuffTimer--;
         }
     }
 
@@ -99,6 +104,14 @@ public class Player {
     
     public void activateShield(int durability) {
         shieldActive = true;
+    }
+    
+    public void addAttackSpeedBuff(int frames) {
+        attackSpeedBuffTimer = frames;
+    }
+    
+    public boolean hasAttackSpeedBuff() {
+        return attackSpeedBuffTimer > 0;
     }
 
     public List<Bullet> getBullets() { return bullets; }
