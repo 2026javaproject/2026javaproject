@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class PowerUpItem {
 
-    public enum ItemType { SPEED_UP, MULTI_SHOT, SHIELD }
+    public enum ItemType { SPEED_UP, MULTI_SHOT, SHIELD, ATTACK_SPEED }
 
     private final ItemType type;
     private int x, y;
@@ -24,9 +24,10 @@ public class PowerUpItem {
 
     public void applyEffect(Player player) {
         switch (type) {
-            case SPEED_UP   -> player.addSpeedBuff(180);   // 3초간 속도 +2
-            case MULTI_SHOT -> player.upgradeWeapon(2);    // weaponLevel → 2
-            case SHIELD     -> player.activateShield(1);   // 피격 1회 무효
+            case SPEED_UP   -> player.addSpeedBuff(180);       // 3초간 속도 +2
+            case MULTI_SHOT -> player.upgradeWeapon(2);        // weaponLevel → 2
+            case SHIELD     -> player.activateShield(1);       // 피격 1회 무효
+            case ATTACK_SPEED -> player.addAttackSpeedBuff(240); // 4초간 공격속도 2배
         }
         collected = true;
     }
@@ -36,6 +37,7 @@ public class PowerUpItem {
             case SPEED_UP   -> Color.YELLOW;
             case MULTI_SHOT -> Color.CYAN;
             case SHIELD     -> Color.GREEN;
+            case ATTACK_SPEED -> Color.MAGENTA;
         };
         g.setColor(c);
         g.fillOval(x, y, SIZE, SIZE);
