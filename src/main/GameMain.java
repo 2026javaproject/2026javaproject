@@ -1,10 +1,10 @@
 // main/GameMain.java
-package main;
+package com.pilot.main;
 
-import screen.GameOverPanel;
-import screen.GamePanel;
-import screen.MainMenuPanel;
-import util.GameConstants;
+import com.pilot.screen.GameOverPanel;
+import com.pilot.screen.GamePanel;
+import com.pilot.screen.MainMenuPanel;
+import com.pilot.util.GameConstants;
 
 import javax.swing.*;
 
