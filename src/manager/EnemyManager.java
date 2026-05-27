@@ -1,63 +1,59 @@
-// manager/EnemyManager.java
-package manager;
+package com.pilot.manager;
 
-import entity.Enemy;
-import util.GameConstants;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import com.pilot.entity.*;
+import com.pilot.util.GameConstants;
 import java.util.List;
 import java.util.Random;
 
 public class EnemyManager {
 
-    private final List<Enemy> enemies      = new ArrayList<>();
-    private final Random      random       = new Random();
-    private int               spawnTimer   = 0;
-    private static final int  SPAWN_INTERVAL = 90;
+    private int frameCounter;
+    private final Random random = new Random();
+    private Player player;
 
-    public void update() {
-        spawnTimer++;
-        if (spawnTimer >= SPAWN_INTERVAL) {
-            spawnEnemy();
-            spawnTimer = 0;
+    public EnemyManager(Player player) {
+        this.player = player;
+        this.frameCounter = 0;
+    }
+
+    public void setPlayer(Player player) { this.player = player; }
+    public void reset() { frameCounter = 0; }
+
+    /** 매 프레임 호출 */
+    public void update(List<Enemy> enemies, int stage) {
+        frameCounter++;
+
+        int interval = Math.max(70 - stage * 10, 25);
+        if (frameCounter % interval == 0) {
+            spawnEnemy(enemies, stage);
         }
 
-        Iterator<Enemy> it = enemies.iterator();
-        while (it.hasNext()) {
-            Enemy e = it.next();
-            e.update();
-            if (e.isOutOfBounds() || !e.isAlive()) it.remove();
+        // 스테이지 2 이상: 가끔 2마리 동시 스폰
+        if (stage >= 2 && frameCounter % (interval * 3) == 0) {
+            spawnEnemy(enemies, stage);
         }
     }
 
-    private void spawnEnemy() {
-        int x = random.nextInt(GameConstants.SCREEN_WIDTH - GameConstants.ENEMY_WIDTH);
-        enemies.add(new Enemy(x, -GameConstants.ENEMY_HEIGHT));
-        // TODO: 웨이브 단위 스폰, 편대 패턴 (Week 2)
-    }
+    private void spawnEnemy(List<Enemy> enemies, int stage) {
+        int x = random.nextInt(
+                Math.max(1, GameConstants.SCREEN_WIDTH - GameConstants.ENEMY_WIDTH));
+        int y = -GameConstants.ENEMY_HEIGHT;
 
-    public boolean checkCollision(Rectangle bulletBounds) {
-        for (Enemy e : enemies) {
-            if (e.getBounds().intersects(bulletBounds)) {
-                e.hit();
-                return true;
-            }
+        int roll = random.nextInt(10);
+        if (stage == 1) {
+            // A 80%, B 20%
+            if (roll < 8) enemies.add(new EnemyTypeA(x, y));
+            else          enemies.add(new EnemyTypeB(x, y));
+        } else if (stage == 2) {
+            // A 40%, B 30%, C 30%
+            if      (roll < 4) enemies.add(new EnemyTypeA(x, y));
+            else if (roll < 7) enemies.add(new EnemyTypeB(x, y));
+            else               enemies.add(new EnemyTypeC(x, y, player));
+        } else {
+            // A 20%, B 40%, C 40%
+            if      (roll < 2) enemies.add(new EnemyTypeA(x, y));
+            else if (roll < 6) enemies.add(new EnemyTypeB(x, y));
+            else               enemies.add(new EnemyTypeC(x, y, player));
         }
-        return false;
     }
-
-    public boolean checkPlayerCollision(Rectangle playerBounds) {
-        for (Enemy e : enemies) {
-            if (e.getBounds().intersects(playerBounds)) return true;
-        }
-        return false;
-    }
-
-    public void draw(Graphics2D g) {
-        for (Enemy e : enemies) e.draw(g);
-    }
-
-    public List<Enemy> getEnemies() { return enemies; }
 }
