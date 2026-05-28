@@ -37,7 +37,13 @@ public class GameConstants {
     public static final int SCORE_BOSS     = 1000;
 
     // Stage constants
-    public static final int[] STAGE_KILL_THRESHOLD = {11, 20, 39};  // 1.5배 증가 (보스 느리게)
+    // 스테이지마다 1마리씩 증가하다가 39마리에서 유지
+    public static final int[] STAGE_KILL_THRESHOLD = {
+        11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+        31, 32, 33, 34, 35, 36, 37, 38, 39,
+        39, 39, 39, 39, 39, 39, 39, 39, 39  // 39마리에서 유지 (최대 44스테이지까지 지원)
+    };
     public static final int STAGE_THRESHOLD_LENGTH = STAGE_KILL_THRESHOLD.length;
 
     // UI constants

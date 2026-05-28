@@ -324,6 +324,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         if (bossActive && boss != null) {
             boss.update(player, enemyBullets);
+            
+            // 보스가 발사한 총알을 enemyBullets에 추가
+            enemyBullets.addAll(boss.getBullets());
+            boss.getBullets().clear();
 
             if (boss.getBounds().intersects(player.getBounds())) {
                 player.hit();
