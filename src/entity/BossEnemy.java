@@ -29,6 +29,9 @@ public class BossEnemy extends Enemy {
     private int moveDir;
     private boolean inPosition;
     private final List<Bullet> bossBullets = new ArrayList<>();
+    
+    private final Rectangle bounds = new Rectangle(0, 0, 
+            GameConstants.BOSS_WIDTH - 24, GameConstants.BOSS_HEIGHT - VERTICAL_MARGIN);
 
     public BossEnemy() {
         this(30);
@@ -117,8 +120,9 @@ public class BossEnemy extends Enemy {
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(x + VERTICAL_MARGIN, y + VERTICAL_MARGIN,
-                GameConstants.BOSS_WIDTH - 24, GameConstants.BOSS_HEIGHT - VERTICAL_MARGIN);
+        bounds.x = x + VERTICAL_MARGIN;
+        bounds.y = y + VERTICAL_MARGIN;
+        return bounds;
     }
 
     @Override
@@ -126,7 +130,6 @@ public class BossEnemy extends Enemy {
         g.setColor(phase == 1 ? Color.RED : Color.ORANGE);
         g.fillRect(x, y, GameConstants.BOSS_WIDTH, GameConstants.BOSS_HEIGHT);
 
-        // Health bar
         g.setColor(Color.DARK_GRAY);
         g.fillRect(x, y - 10, GameConstants.BOSS_WIDTH, 6);
         g.setColor(Color.GREEN);

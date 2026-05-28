@@ -9,6 +9,8 @@ public class EnemyTypeA extends Enemy {
     private static final int SCORE = 10;
     private static final Color COLOR = Color.RED;
     
+    private final Rectangle bounds = new Rectangle(0, 0, GameConstants.ENEMY_WIDTH, GameConstants.ENEMY_HEIGHT);
+    
     public EnemyTypeA(int x, int y) {
         super(x, y, HP, SPEED, SCORE);
     }
@@ -31,6 +33,8 @@ public class EnemyTypeA extends Enemy {
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(x, y, GameConstants.ENEMY_WIDTH, GameConstants.ENEMY_HEIGHT);
+        bounds.x = x;
+        bounds.y = y;
+        return bounds;
     }
 }

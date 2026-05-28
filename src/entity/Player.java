@@ -1,7 +1,6 @@
 package com.pilot.entity;
 
 import com.pilot.util.GameConstants;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,10 @@ public class Player {
     private static final int BASE_SPEED = 5;
     private boolean shieldActive = false;
     private int attackSpeedBuffTimer = 0;
+
+    private static final Color PLAYER_COLOR = new Color(125, 211, 252);
+    private static final Color SHIELD_COLOR = new Color(0, 255, 0, 100);
+    private final Rectangle bounds = new Rectangle(0, 0, GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
 
     public Player(int x, int y) {
         this.x  = x - GameConstants.PLAYER_WIDTH / 2;
@@ -81,17 +84,19 @@ public class Player {
         int cx   = x + GameConstants.PLAYER_WIDTH / 2;
         int[] px = { cx, cx - 16, cx + 16 };
         int[] py = { y,  y + GameConstants.PLAYER_HEIGHT, y + GameConstants.PLAYER_HEIGHT };
-        g.setColor(new Color(125, 211, 252));
+        g.setColor(PLAYER_COLOR);
         g.fillPolygon(px, py, 3);
 
         if (shieldActive) {
-            g.setColor(new Color(0, 255, 0, 100));
+            g.setColor(SHIELD_COLOR);
             g.drawOval(cx - 25, y - 5, 50, 50);
         }
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
+        bounds.x = x;
+        bounds.y = y;
+        return bounds;
     }
 
     public void addSpeedBuff(int frames) {
