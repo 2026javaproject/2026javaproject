@@ -119,6 +119,7 @@ public class Player {
     public int          getX()       { return x; }
     public int          getY()       { return y; }
     public boolean      isAlive()    { return hp > 0; }
+    public boolean      isShieldActive() { return shieldActive; }
 
     public void setLeft(boolean v)  { left  = v; }
     public void setRight(boolean v) { right = v; }

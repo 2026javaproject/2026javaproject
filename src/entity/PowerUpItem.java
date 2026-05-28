@@ -11,6 +11,7 @@ public class PowerUpItem {
     private int x, y;
     private boolean collected = false;
     private static final int SIZE = 23;
+    private int pulseTimer = 0;
 
     public PowerUpItem(ItemType type, int x, int y) {
         this.type = type;
@@ -20,6 +21,7 @@ public class PowerUpItem {
 
     public void update() {
         y += 2; // 낙하
+        pulseTimer++;
     }
 
     public void applyEffect(Player player) {
@@ -39,6 +41,16 @@ public class PowerUpItem {
             case SHIELD     -> Color.GREEN;
             case ATTACK_SPEED -> Color.MAGENTA;
         };
+
+        double pulse = (Math.sin(pulseTimer * 0.18) + 1.0) / 2.0; // 0..1
+        int glowSize = SIZE + (int) (10 * pulse);
+        int glowX = x - (glowSize - SIZE) / 2;
+        int glowY = y - (glowSize - SIZE) / 2;
+        int alpha = 60 + (int) (120 * pulse);
+
+        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha));
+        g.fillOval(glowX, glowY, glowSize, glowSize);
+
         g.setColor(c);
         g.fillOval(x, y, SIZE, SIZE);
         g.setColor(Color.WHITE);

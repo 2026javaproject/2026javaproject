@@ -1,7 +1,8 @@
-package screen;
+package com.pilot.screen;
 
-import main.GameMain;
-import util.GameConstants;
+import com.pilot.main.GameMain;
+import com.pilot.util.GameConstants;
+import util.HighScoreFileIO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,15 +11,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.DecimalFormat;
 
 public class MainMenuPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
-    private static final String HIGH_SCORE_FILE = "highscore.txt";
     private static final String[] BUTTON_LABELS = {
             "1 START GAME",
             "2 HIGH SCORE",
@@ -64,27 +60,7 @@ public class MainMenuPanel extends JPanel implements MouseListener, MouseMotionL
     }
 
     private int loadBestScore() {
-        Path path = Path.of(HIGH_SCORE_FILE);
-        if (!Files.exists(path)) {
-            return 0;
-        }
-        try {
-            String content = Files.readString(path, StandardCharsets.UTF_8).trim();
-            if (content.isEmpty()) {
-                return 0;
-            }
-            String cleaned = content.replaceAll("[^0-9-]", "");
-            if (cleaned.isEmpty()) {
-                return 0;
-            }
-            return Integer.parseInt(cleaned);
-        } catch (IOException e) {
-            System.err.println("Failed to read high score file: " + e.getMessage());
-            return 0;
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid high score value in file.");
-            return 0;
-        }
+        return HighScoreFileIO.loadHighScore();
     }
 
     private String getBestScoreText() {
