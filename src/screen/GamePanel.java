@@ -342,6 +342,10 @@ public class GamePanel extends JPanel implements Runnable {
                     if (!boss.isAlive()) {
                         score += boss.getScoreValue();
                         addExplosion(boss.getX(), boss.getY(), 90);
+                        
+                        // 보스 아이템 드롭 (2-3개 랜덤)
+                        itemManager.dropBossItems(boss.getX(), boss.getY(), items);
+                        
                         bossActive = false;
                         boss = null;
                         bossPendingWarning = false;
