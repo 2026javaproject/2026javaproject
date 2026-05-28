@@ -24,7 +24,7 @@ public class PowerUpItem {
         pulseTimer++;
     }
 
-    public void applyEffect(Player player) {
+    public void applyEffect(com.pilot.entity.Player player) {
         switch (type) {
             case SPEED_UP   -> player.addSpeedBuff(180);       // 3초간 속도 +2
             case MULTI_SHOT -> player.upgradeWeapon(2);        // weaponLevel → 2

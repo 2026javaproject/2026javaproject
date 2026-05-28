@@ -1,32 +1,43 @@
 package com.pilot.entity;
 
 import com.pilot.util.GameConstants;
-import com.pilot.entity.Bullet;
-import com.pilot.entity.Enemy;
-import com.pilot.entity.Player;
-
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 페이즈 1 (HP > 50%): 3발 부채꼴, 70프레임마다
- * 페이즈 2 (HP ≤ 50%): 5발 부채꼴, 40프레임마다 + 플레이어 조준 발사
+ * Boss enemy with two phases:
+ * Phase 1 (HP > 50%): 3-bullet spread, 70 frames interval
+ * Phase 2 (HP ≤ 50%): 5-bullet spread + player-tracking shot, 40 frames interval
  */
 public class BossEnemy extends Enemy {
-
-    private static final int BOSS_W = 90;
-    private static final int BOSS_H = 70;
+    private static final int PHASE1_BULLET_COUNT = 3;
+    private static final int PHASE2_BULLET_COUNT = 5;
+    private static final int PHASE1_INTERVAL = 70;
+    private static final int PHASE2_INTERVAL = 40;
+    private static final int PHASE1_SPEED = 2;
+    private static final int PHASE2_SPEED = 3;
+    private static final double SPREAD_ANGLE = Math.PI / 2.5;
+    private static final int BULLET_SPREAD_SPEED = 5;
+    private static final int TRACKING_BULLET_SPEED = 6;
+    private static final int HORIZONTAL_MARGIN = 10;
+    private static final int VERTICAL_MARGIN = 12;
 
     private final int maxHp;
     private int phase;
     private int shootTimer;
     private int moveDir;
     private boolean inPosition;
+    private final List<Bullet> bossBullets = new ArrayList<>();
 
     public BossEnemy() {
-        super(GameConstants.SCREEN_WIDTH / 2 - 45, -BOSS_H - 10,
-                30, 2, GameConstants.SCORE_BOSS);
-        this.maxHp = 30;
+        this(30);
+    }
+    
+    public BossEnemy(int hp) {
+        super(GameConstants.SCREEN_WIDTH / 2 - GameConstants.BOSS_WIDTH / 2,
+                GameConstants.BOSS_INITIAL_Y, hp, PHASE1_SPEED, GameConstants.SCORE_BOSS);
+        this.maxHp = hp;
         this.phase = 1;
         this.shootTimer = 0;
         this.moveDir = 1;
@@ -37,80 +48,92 @@ public class BossEnemy extends Enemy {
     public void move() {
         if (!inPosition) {
             y += 2;
-            if (y >= 60) inPosition = true;
+            if (y >= GameConstants.BOSS_POSITIONING_Y) inPosition = true;
             return;
         }
         x += speed * moveDir;
-        if (x > GameConstants.SCREEN_WIDTH - BOSS_W - 10) moveDir = -1;
-        if (x < 10) moveDir = 1;
+        if (x > GameConstants.SCREEN_WIDTH - GameConstants.BOSS_WIDTH - HORIZONTAL_MARGIN) {
+            moveDir = -1;
+        }
+        if (x < HORIZONTAL_MARGIN) {
+            moveDir = 1;
+        }
     }
 
     @Override
     public void update(Player player, List<Bullet> bullets) {
         move();
-
-        // 페이즈 전환
-        if (hp <= maxHp / 2 && phase == 1) {
-            phase = 2;
-            speed = 3;
-        }
+        updatePhase();
 
         if (inPosition) {
             shootTimer++;
-            int interval = (phase == 1) ? 70 : 40;
+            int interval = (phase == 1) ? PHASE1_INTERVAL : PHASE2_INTERVAL;
             if (shootTimer >= interval) {
-                fireBullets(bullets, player);
+                fireBullets(player);
                 shootTimer = 0;
             }
         }
     }
 
-    private void fireBullets(List<Bullet> bullets, Player player) {
-        int cx = x + BOSS_W / 2;
-        int cy = y + BOSS_H;
-        int count = (phase == 1) ? 3 : 5;
-
-        double spread = Math.PI / 2.5;
-        for (int i = 0; i < count; i++) {
-            double angle = (Math.PI / 2)
-                    - spread / 2
-                    + spread * i / Math.max(count - 1, 1);
-            int sx = (int)(Math.cos(angle) * 5);
-            int sy = Math.max((int)(Math.sin(angle) * 5), 3);
-            bullets.add(new Bullet(cx - 5, cy, sx, sy, false));
+    private void updatePhase() {
+        if (hp <= maxHp / 2 && phase == 1) {
+            phase = 2;
+            speed = PHASE2_SPEED;
         }
+    }
 
-        // 페이즈 2: 플레이어 조준 발사
+    private void fireBullets(Player player) {
+        int cx = x + GameConstants.BOSS_WIDTH / 2;
+        int cy = y + GameConstants.BOSS_HEIGHT;
+        int bulletCount = (phase == 1) ? PHASE1_BULLET_COUNT : PHASE2_BULLET_COUNT;
+
+        fireSpreadBullets(cx, cy, bulletCount);
+        
         if (phase == 2 && player != null) {
-            int dx = player.getX() + 20 - cx;
-            int dy = player.getY() + 25 - cy;
-            double dist = Math.sqrt((double)dx * dx + (double)dy * dy);
-            if (dist > 0) {
-                int sx2 = (int)(dx / dist * 6);
-                int sy2 = (int)(dy / dist * 6);
-                bullets.add(new Bullet(cx - 5, cy, sx2, Math.max(sy2, 2), false));
-            }
+            fireTrackingBullet(cx, cy, player);
+        }
+    }
+
+    private void fireSpreadBullets(int cx, int cy, int count) {
+        for (int i = 0; i < count; i++) {
+            double angle = (Math.PI / 2) - SPREAD_ANGLE / 2 + SPREAD_ANGLE * i / Math.max(count - 1, 1);
+            int sx = (int)(Math.cos(angle) * BULLET_SPREAD_SPEED);
+            int sy = Math.max((int)(Math.sin(angle) * BULLET_SPREAD_SPEED), 3);
+            bossBullets.add(new Bullet(cx - 5, cy, sx, sy, false));
+        }
+    }
+
+    private void fireTrackingBullet(int cx, int cy, Player player) {
+        int dx = player.getX() + GameConstants.PLAYER_WIDTH / 2 - cx;
+        int dy = player.getY() + GameConstants.PLAYER_HEIGHT / 2 - cy;
+        double dist = Math.sqrt((double)dx * dx + (double)dy * dy);
+        
+        if (dist > 0) {
+            int sx = (int)(dx / dist * TRACKING_BULLET_SPEED);
+            int sy = (int)(dy / dist * TRACKING_BULLET_SPEED);
+            bossBullets.add(new Bullet(cx - 5, cy, sx, Math.max(sy, 2), false));
         }
     }
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(x + 12, y + 12, BOSS_W - 24, BOSS_H - 12);
+        return new Rectangle(x + VERTICAL_MARGIN, y + VERTICAL_MARGIN,
+                GameConstants.BOSS_WIDTH - 24, GameConstants.BOSS_HEIGHT - VERTICAL_MARGIN);
     }
 
     @Override
     public void draw(Graphics2D g) {
-        // TODO: 스프라이트 또는 도형 렌더링
         g.setColor(phase == 1 ? Color.RED : Color.ORANGE);
-        g.fillRect(x, y, BOSS_W, BOSS_H);
+        g.fillRect(x, y, GameConstants.BOSS_WIDTH, GameConstants.BOSS_HEIGHT);
 
-        // 체력바
+        // Health bar
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(x, y - 10, BOSS_W, 6);
+        g.fillRect(x, y - 10, GameConstants.BOSS_WIDTH, 6);
         g.setColor(Color.GREEN);
-        g.fillRect(x, y - 10, (int)(BOSS_W * ((double)hp / maxHp)), 6);
+        g.fillRect(x, y - 10, (int)(GameConstants.BOSS_WIDTH * ((double)hp / maxHp)), 6);
     }
 
     public int getPhase() { return phase; }
     public double getHpRatio() { return (double) hp / maxHp; }
+    public List<Bullet> getBullets() { return bossBullets; }
 }

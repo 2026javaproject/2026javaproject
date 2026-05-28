@@ -1,5 +1,6 @@
 package com.pilot.entity;
 
+import com.pilot.util.GameConstants;
 import java.awt.*;
 import java.util.List;
 
@@ -31,11 +32,12 @@ public abstract class Enemy {
     }
 
     public boolean isOffScreen() {
-        return y > 800;
+        return y > GameConstants.SCREEN_HEIGHT;
     }
 
     public int getScoreValue() { return scoreValue; }
     public int getX() { return x; }
     public int getY() { return y; }
     public int getHp() { return hp; }
+    public void setHp(int hp) { this.hp = hp; }
 }

@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Random;
 
 public class EnemyManager {
+    private static final int DUAL_SPAWN_THRESHOLD = 2;
+    private static final int ENEMY_TYPE_A_THRESHOLD_STAGE1 = 8;
+    private static final int ENEMY_TYPE_B_START_STAGE1 = 10;
+    private static final int ENEMY_TYPE_A_THRESHOLD_STAGE2 = 3;
+    private static final int ENEMY_TYPE_B_THRESHOLD_STAGE2 = 6;
+    private static final int TOTAL_ENEMY_TYPES = 10;
+    private static final int DUAL_SPAWN_INTERVAL_MULTIPLIER = 3;
 
     private int frameCounter;
     private final Random random = new Random();
@@ -16,44 +23,59 @@ public class EnemyManager {
         this.frameCounter = 0;
     }
 
-    public void setPlayer(Player player) { this.player = player; }
-    public void reset() { frameCounter = 0; }
+    public void setPlayer(Player player) { 
+        this.player = player; 
+    }
+    
+    public void reset() { 
+        frameCounter = 0; 
+    }
 
-    /** 매 프레임 호출 */
     public void update(List<Enemy> enemies, int stage) {
         frameCounter++;
 
-        int interval = Math.max(70 - stage * 10, 25);
+        int interval = calculateSpawnInterval(stage);
         if (frameCounter % interval == 0) {
             spawnEnemy(enemies, stage);
         }
 
-        // 스테이지 2 이상: 가끔 2마리 동시 스폰
-        if (stage >= 2 && frameCounter % (interval * 3) == 0) {
+        if (stage >= DUAL_SPAWN_THRESHOLD && frameCounter % (interval * DUAL_SPAWN_INTERVAL_MULTIPLIER) == 0) {
             spawnEnemy(enemies, stage);
         }
     }
 
+    private int calculateSpawnInterval(int stage) {
+        return Math.max(GameConstants.ENEMY_SPAWN_BASE_INTERVAL - stage * 10, 
+                        GameConstants.ENEMY_SPAWN_MIN_INTERVAL);
+    }
+
     private void spawnEnemy(List<Enemy> enemies, int stage) {
-        int x = random.nextInt(
-                Math.max(1, GameConstants.SCREEN_WIDTH - GameConstants.ENEMY_WIDTH));
+        int x = random.nextInt(Math.max(1, GameConstants.SCREEN_WIDTH - GameConstants.ENEMY_WIDTH));
         int y = -GameConstants.ENEMY_HEIGHT;
 
-        int roll = random.nextInt(10);
-        if (stage == 1) {
-            // A 80%, B 20%
-            if (roll < 8) enemies.add(new EnemyTypeA(x, y));
-            else          enemies.add(new EnemyTypeB(x, y));
-        } else if (stage == 2) {
-            // A 40%, B 30%, C 30%
-            if      (roll < 4) enemies.add(new EnemyTypeA(x, y));
-            else if (roll < 7) enemies.add(new EnemyTypeB(x, y));
-            else               enemies.add(new EnemyTypeC(x, y, player));
+        int roll = random.nextInt(TOTAL_ENEMY_TYPES);
+        Enemy enemy = selectEnemyType(roll, x, y, stage);
+        
+        // 5스테이지 이상: HP 2배
+        if (stage >= 5) {
+            enemy.setHp(enemy.getHp() * 2);
+        }
+        
+        enemies.add(enemy);
+    }
+
+    private Enemy selectEnemyType(int roll, int x, int y, int stage) {
+        if (stage <= 2) {
+            return roll < ENEMY_TYPE_A_THRESHOLD_STAGE1 ? 
+                new EnemyTypeA(x, y) : new EnemyTypeB(x, y);
+        } else if (stage < 5) {
+            if (roll < 4) return new EnemyTypeA(x, y);
+            else if (roll < 7) return new EnemyTypeB(x, y);
+            else return new EnemyTypeC(x, y, player);
         } else {
-            // A 20%, B 40%, C 40%
-            if      (roll < 2) enemies.add(new EnemyTypeA(x, y));
-            else if (roll < 6) enemies.add(new EnemyTypeB(x, y));
-            else               enemies.add(new EnemyTypeC(x, y, player));
+            if (roll < 3) return new EnemyTypeA(x, y);
+            else if (roll < 6) return new EnemyTypeB(x, y);
+            else return new EnemyTypeC(x, y, player);
         }
     }
 }

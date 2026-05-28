@@ -1,11 +1,16 @@
 package com.pilot.entity;
 
+import com.pilot.util.GameConstants;
 import java.awt.*;
 
 public class EnemyTypeA extends Enemy {
+    private static final int HP = 1;
+    private static final int SPEED = 2;
+    private static final int SCORE = 10;
+    private static final Color COLOR = Color.RED;
     
     public EnemyTypeA(int x, int y) {
-        super(x, y, 1, 2, 10);
+        super(x, y, HP, SPEED, SCORE);
     }
 
     @Override
@@ -20,12 +25,12 @@ public class EnemyTypeA extends Enemy {
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y, 36, 36);
+        g.setColor(COLOR);
+        g.fillRect(x, y, GameConstants.ENEMY_WIDTH, GameConstants.ENEMY_HEIGHT);
     }
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(x, y, 36, 36);
+        return new Rectangle(x, y, GameConstants.ENEMY_WIDTH, GameConstants.ENEMY_HEIGHT);
     }
 }

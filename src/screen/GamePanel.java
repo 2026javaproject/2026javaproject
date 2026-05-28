@@ -68,6 +68,9 @@ public class GamePanel extends JPanel implements Runnable {
         pauseButton.addActionListener(e -> togglePause());
         add(pauseButton);
 
+        // 자동공격 활성화
+        shooting = true;
+
         setupInput();
     }
 
@@ -87,41 +90,85 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void setupInput() {
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT -> player.setLeft(true);
-                    case KeyEvent.VK_RIGHT -> player.setRight(true);
-                    case KeyEvent.VK_UP -> player.setUp(true);
-                    case KeyEvent.VK_DOWN -> player.setDown(true);
-                    case KeyEvent.VK_SPACE -> shooting = true;
-                    default -> {
-                    }
-                }
-            }
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getActionMap();
 
+        // WASD 키 처리 (WHEN_IN_FOCUSED_WINDOW)
+        inputMap.put(KeyStroke.getKeyStroke('W'), "moveUp");
+        inputMap.put(KeyStroke.getKeyStroke('w'), "moveUp");
+        inputMap.put(KeyStroke.getKeyStroke('A'), "moveLeft");
+        inputMap.put(KeyStroke.getKeyStroke('a'), "moveLeft");
+        inputMap.put(KeyStroke.getKeyStroke('S'), "moveDown");
+        inputMap.put(KeyStroke.getKeyStroke('s'), "moveDown");
+        inputMap.put(KeyStroke.getKeyStroke('D'), "moveRight");
+        inputMap.put(KeyStroke.getKeyStroke('d'), "moveRight");
+
+        // 화살표 키 처리
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
+
+        // ESC 키 처리
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "togglePause");
+
+        // Up 액션
+        actionMap.put("moveUp", new AbstractAction() {
             @Override
-            public void keyReleased(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT -> player.setLeft(false);
-                    case KeyEvent.VK_RIGHT -> player.setRight(false);
-                    case KeyEvent.VK_UP -> player.setUp(false);
-                    case KeyEvent.VK_DOWN -> player.setDown(false);
-                    case KeyEvent.VK_SPACE -> shooting = false;
-                    default -> {
-                    }
-                }
+            public void actionPerformed(ActionEvent e) {
+                player.setUp(true);
             }
         });
 
-        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = getActionMap();
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "togglePause");
+        // Left 액션
+        actionMap.put("moveLeft", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player.setLeft(true);
+            }
+        });
+
+        // Down 액션
+        actionMap.put("moveDown", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player.setDown(true);
+            }
+        });
+
+        // Right 액션
+        actionMap.put("moveRight", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player.setRight(true);
+            }
+        });
+
+        // Pause 액션
         actionMap.put("togglePause", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 togglePause();
+            }
+        });
+
+        // KeyRelease 처리를 위해 KeyListener 추가
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_UP -> player.setUp(false);
+                    case KeyEvent.VK_LEFT -> player.setLeft(false);
+                    case KeyEvent.VK_DOWN -> player.setDown(false);
+                    case KeyEvent.VK_RIGHT -> player.setRight(false);
+                }
+                char c = Character.toUpperCase(e.getKeyChar());
+                switch (c) {
+                    case 'W' -> player.setUp(false);
+                    case 'A' -> player.setLeft(false);
+                    case 'S' -> player.setDown(false);
+                    case 'D' -> player.setRight(false);
+                }
             }
         });
     }

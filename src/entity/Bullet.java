@@ -9,13 +9,19 @@ public class Bullet {
     private int       x, y;
     private final int dx, dy;
     private final boolean playerBullet;
+    private final float damage;
 
     public Bullet(int x, int y, int dx, int dy, boolean playerBullet) {
+        this(x, y, dx, dy, playerBullet, 1.0f);
+    }
+    
+    public Bullet(int x, int y, int dx, int dy, boolean playerBullet, float damage) {
         this.x  = x;
         this.y  = y;
         this.dx = dx;
         this.dy = dy;
         this.playerBullet = playerBullet;
+        this.damage = damage;
     }
 
     public void update() {
@@ -40,4 +46,5 @@ public class Bullet {
     }
     
     public boolean isPlayerBullet() { return playerBullet; }
+    public float getDamage() { return damage; }
 }

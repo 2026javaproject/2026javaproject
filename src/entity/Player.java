@@ -16,7 +16,7 @@ public class Player {
     private boolean invincible      = false;
     private int     invincibleTimer  = 0;
     private static final int INVINCIBLE_DURATION = 90;
-    
+
     private int weaponLevel = 1;
     private int speedBuffTimer = 0;
     private static final int BASE_SPEED = 5;
@@ -43,11 +43,11 @@ public class Player {
             invincibleTimer--;
             if (invincibleTimer <= 0) invincible = false;
         }
-        
+
         if (speedBuffTimer > 0) {
             speedBuffTimer--;
         }
-        
+
         if (attackSpeedBuffTimer > 0) {
             attackSpeedBuffTimer--;
         }
@@ -56,7 +56,7 @@ public class Player {
     public void shoot() {
         int bx = x + GameConstants.PLAYER_WIDTH / 2 - GameConstants.BULLET_WIDTH / 2;
         bullets.add(new Bullet(bx, y, 0, -GameConstants.BULLET_SPEED, true));
-        
+
         if (weaponLevel >= 2) {
             bullets.add(new Bullet(bx - 15, y, -2, -GameConstants.BULLET_SPEED, true));
             bullets.add(new Bullet(bx + 15, y, 2, -GameConstants.BULLET_SPEED, true));
@@ -83,7 +83,7 @@ public class Player {
         int[] py = { y,  y + GameConstants.PLAYER_HEIGHT, y + GameConstants.PLAYER_HEIGHT };
         g.setColor(new Color(125, 211, 252));
         g.fillPolygon(px, py, 3);
-        
+
         if (shieldActive) {
             g.setColor(new Color(0, 255, 0, 100));
             g.drawOval(cx - 25, y - 5, 50, 50);
@@ -97,19 +97,19 @@ public class Player {
     public void addSpeedBuff(int frames) {
         speedBuffTimer = frames;
     }
-    
+
     public void upgradeWeapon(int level) {
         weaponLevel = Math.max(weaponLevel, level);
     }
-    
+
     public void activateShield(int durability) {
         shieldActive = true;
     }
-    
+
     public void addAttackSpeedBuff(int frames) {
         attackSpeedBuffTimer = frames;
     }
-    
+
     public boolean hasAttackSpeedBuff() {
         return attackSpeedBuffTimer > 0;
     }
