@@ -13,12 +13,16 @@ import java.awt.*;
  * │    효과: 빠른 피하기 가능                                    │
  * ├─────────────────────────────────────────────────────────────┤
  * │ 🔵 CYAN (MULTI_SHOT)                                         │
- * │    기능: 멀티샷 무기 업그레이드 (양쪽 옆 총알 추가)         │
- * │    효과: 동시에 3발 발사 (가운데 1발 + 양옆 2발)             │
+ * │    기능: 무기 레벨 +1 (최대 4단계)                           │
+ * │    효과: 레벨별 발사 총알 개수                               │
+ * │         Lv1: 1발 (중앙)                                      │
+ * │         Lv2: 2발 (중앙 + 우측)                               │
+ * │         Lv3: 3발 (중앙 + 양옆)                               │
+ * │         Lv4: 4발 (중앙 + 양옆 2개 + 우측2)                  │
  * ├─────────────────────────────────────────────────────────────┤
  * │ 🟢 GREEN (SHIELD)                                            │
- * │    기능: 방어막 활성화 (피격 1회 무효)                       │
- * │    효과: 한 번의 피해로부터 보호                             │
+ * │    기능: 체력 1 회복 (최대 3까지)                            │
+ * │    효과: 체력이 3(최대)이면 효과 없음                        │
  * ├─────────────────────────────────────────────────────────────┤
  * │ 🟣 MAGENTA (ATTACK_SPEED)                                    │
  * │    기능: 공격 속도 2배 증가 (4초간)                          │
@@ -62,8 +66,8 @@ public class PowerUpItem {
     public void applyEffect(Player player) {
         switch (type) {
             case SPEED_UP -> player.addSpeedBuff(180);          // 3초 (180프레임 @ 60FPS)
-            case MULTI_SHOT -> player.upgradeWeapon(2);         // weaponLevel = 2
-            case SHIELD -> player.activateShield(1);            // 방어막 1회
+            case MULTI_SHOT -> player.upgradeWeapon(player.getWeaponLevel() + 1); // 무기 레벨 +1 (최대 4)
+            case SHIELD -> player.recoverHealth(1);             // 체력 1 회복 (최대 3)
             case ATTACK_SPEED -> player.addAttackSpeedBuff(240); // 4초 (240프레임 @ 60FPS)
         }
         collected = true;

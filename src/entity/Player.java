@@ -58,19 +58,28 @@ public class Player {
 
     public void shoot() {
         int bx = x + GameConstants.PLAYER_WIDTH / 2 - GameConstants.BULLET_WIDTH / 2;
-        bullets.add(new Bullet(bx, y, 0, -GameConstants.BULLET_SPEED, true));
-
+        
+        // weaponLevel에 따라 총알 개수 증가 (1~4발)
+        // Level 1: 1발 (중앙)
+        // Level 2: 2발 (중앙 + 오른쪽)
+        // Level 3: 3발 (중앙 + 양옆)
+        // Level 4: 4발 (중앙 + 양옆 2개 + 오른쪽)
+        
+        bullets.add(new Bullet(bx, y, 0, -GameConstants.BULLET_SPEED, true)); // 중앙
+        
         if (weaponLevel >= 2) {
-            bullets.add(new Bullet(bx - 15, y, -2, -GameConstants.BULLET_SPEED, true));
-            bullets.add(new Bullet(bx + 15, y, 2, -GameConstants.BULLET_SPEED, true));
+            bullets.add(new Bullet(bx + 15, y, 2, -GameConstants.BULLET_SPEED, true)); // 우측
+        }
+        if (weaponLevel >= 3) {
+            bullets.add(new Bullet(bx - 15, y, -2, -GameConstants.BULLET_SPEED, true)); // 좌측
+        }
+        if (weaponLevel >= 4) {
+            bullets.add(new Bullet(bx + 30, y, 4, -GameConstants.BULLET_SPEED, true)); // 우측 2
         }
     }
 
     public void hit() {
-        if (invincible || shieldActive) {
-            if (shieldActive) {
-                shieldActive = false;
-            }
+        if (invincible) {
             return;
         }
         hp--;
@@ -86,11 +95,6 @@ public class Player {
         int[] py = { y,  y + GameConstants.PLAYER_HEIGHT, y + GameConstants.PLAYER_HEIGHT };
         g.setColor(PLAYER_COLOR);
         g.fillPolygon(px, py, 3);
-
-        if (shieldActive) {
-            g.setColor(SHIELD_COLOR);
-            g.drawOval(cx - 25, y - 5, 50, 50);
-        }
     }
 
     public Rectangle getBounds() {
@@ -104,11 +108,13 @@ public class Player {
     }
 
     public void upgradeWeapon(int level) {
-        weaponLevel = Math.max(weaponLevel, level);
+        // 최대 4단계까지 증가
+        weaponLevel = Math.min(Math.max(weaponLevel, level), 4);
     }
 
-    public void activateShield(int durability) {
-        shieldActive = true;
+    public void recoverHealth(int amount) {
+        // 체력 회복 (최대값 초과 방지)
+        hp = Math.min(hp + amount, GameConstants.PLAYER_HP);
     }
 
     public void addAttackSpeedBuff(int frames) {
@@ -124,7 +130,8 @@ public class Player {
     public int          getX()       { return x; }
     public int          getY()       { return y; }
     public boolean      isAlive()    { return hp > 0; }
-    public boolean      isShieldActive() { return shieldActive; }
+    public int          getWeaponLevel() { return weaponLevel; }
+    public boolean      isShieldActive() { return false; } // 방어막 기능 변경됨 (체력 회복)
 
     public void setLeft(boolean v)  { left  = v; }
     public void setRight(boolean v) { right = v; }
