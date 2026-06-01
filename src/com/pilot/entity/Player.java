@@ -123,7 +123,7 @@ public class Player {
 
     public void upgradeWeapon(int level) {
         // 최대 4단계까지 증가
-        weaponLevel = Math.min(Math.max(weaponLevel, level), 4);
+        weaponLevel = Math.min(level, 4);
     }
 
     public void addShield(int frames) {
