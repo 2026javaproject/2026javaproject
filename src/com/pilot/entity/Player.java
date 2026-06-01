@@ -20,6 +20,7 @@ public class Player {
     private int speedBuffTimer = 0;
     private static final int BASE_SPEED = 5;
     private boolean shieldActive = false;
+    private int shieldTimer = 0;
     private int attackSpeedBuffTimer = 0;
 
     private static final Color PLAYER_COLOR = new Color(125, 211, 252);
@@ -51,6 +52,13 @@ public class Player {
             speedBuffTimer--;
         }
 
+        if (shieldTimer > 0) {
+            shieldTimer--;
+            if (shieldTimer <= 0) {
+                shieldActive = false;
+            }
+        }
+
         if (attackSpeedBuffTimer > 0) {
             attackSpeedBuffTimer--;
         }
@@ -79,7 +87,7 @@ public class Player {
     }
 
     public void hit() {
-        if (invincible) {
+        if (invincible || shieldActive) {
             return;
         }
         hp--;
@@ -88,9 +96,15 @@ public class Player {
     }
 
     public void draw(Graphics2D g) {
-        if (invincible && (invincibleTimer / 5) % 2 == 0) return;
+        if (invincible && !shieldActive && (invincibleTimer / 5) % 2 == 0) return;
 
         int cx   = x + GameConstants.PLAYER_WIDTH / 2;
+        if (shieldActive) {
+            g.setColor(SHIELD_COLOR);
+            g.fillOval(cx - 22, y - 10, 44, 54);
+            g.setColor(new Color(80, 200, 255));
+            g.drawOval(cx - 22, y - 10, 44, 54);
+        }
         int[] px = { cx, cx - 16, cx + 16 };
         int[] py = { y,  y + GameConstants.PLAYER_HEIGHT, y + GameConstants.PLAYER_HEIGHT };
         g.setColor(PLAYER_COLOR);
@@ -112,9 +126,9 @@ public class Player {
         weaponLevel = Math.min(Math.max(weaponLevel, level), 4);
     }
 
-    public void recoverHealth(int amount) {
-        // 체력 회복 (최대값 초과 방지)
-        hp = Math.min(hp + amount, GameConstants.PLAYER_HP);
+    public void addShield(int frames) {
+        shieldActive = true;
+        shieldTimer = Math.max(shieldTimer, frames);
     }
 
     public void addAttackSpeedBuff(int frames) {
@@ -131,7 +145,7 @@ public class Player {
     public int          getY()       { return y; }
     public boolean      isAlive()    { return hp > 0; }
     public int          getWeaponLevel() { return weaponLevel; }
-    public boolean      isShieldActive() { return false; } // 방어막 기능 변경됨 (체력 회복)
+    public boolean      isShieldActive() { return shieldActive; }
 
     public void setLeft(boolean v)  { left  = v; }
     public void setRight(boolean v) { right = v; }

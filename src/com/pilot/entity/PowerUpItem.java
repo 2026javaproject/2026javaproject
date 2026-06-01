@@ -21,8 +21,8 @@ import java.awt.*;
  * │         Lv4: 4발 (중앙 + 양옆 2개 + 우측2)                  │
  * ├─────────────────────────────────────────────────────────────┤
  * │ 🟢 GREEN (SHIELD)                                            │
- * │    기능: 체력 1 회복 (최대 3까지)                            │
- * │    효과: 체력이 3(최대)이면 효과 없음                        │
+ * │    기능: 일정 시간 방어막 활성화                             │
+ * │    효과: 활성화 중에는 피해를 받지 않음                      │
  * ├─────────────────────────────────────────────────────────────┤
  * │ 🟣 MAGENTA (ATTACK_SPEED)                                    │
  * │    기능: 공격 속도 2배 증가 (4초간)                          │
@@ -67,7 +67,7 @@ public class PowerUpItem {
         switch (type) {
             case SPEED_UP -> player.addSpeedBuff(180);          // 3초 (180프레임 @ 60FPS)
             case MULTI_SHOT -> player.upgradeWeapon(player.getWeaponLevel() + 1); // 무기 레벨 +1 (최대 4)
-            case SHIELD -> player.recoverHealth(1);             // 체력 1 회복 (최대 3)
+            case SHIELD -> player.addShield(GameConstants.SHIELD_DURATION); // 일정 시간 방어막 활성화
             case ATTACK_SPEED -> player.addAttackSpeedBuff(240); // 4초 (240프레임 @ 60FPS)
         }
         collected = true;

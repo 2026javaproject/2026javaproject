@@ -54,4 +54,5 @@ public class GameConstants {
     // Item constants
     public static final int ITEM_SIZE      = 23;
     public static final int ITEM_FALL_SPEED = 2;
+    public static final int SHIELD_DURATION = 240;
 }
