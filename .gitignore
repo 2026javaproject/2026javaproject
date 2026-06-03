@@ -1,30 +1,48 @@
-# build (컴파일 결과물 및 빌드 도구)
-out/
-build/
-target/
-.gradle/
+# 컴파일된 파일
+*.class
+*.jar
+*.war
 bin/
+out/
+target/
 
-# IntelliJ (IDE 설정)
+# IDE 설정 파일 (IntelliJ)
 .idea/
-!.idea/codeStyles/
-!.idea/runConfigurations/
 *.iml
 *.iws
 *.ipr
 
-# VSCode
+# IDE 설정 파일 (Eclipse)
+.eclipse/
+.settings/
+.classpath
+.project
+
+# IDE 설정 파일 (VSCode)
 .vscode/
 
-# OS
+# 빌드 도구
+build/
+.gradle/
+.maven/
+
+# OS 생성 파일
 .DS_Store
 Thumbs.db
 
-# Kotlin
-.kotlin/
-
-# Java 가비지/임시 파일
+# 로그 파일
 *.log
+
+# 임시 파일
 *.temp
 *.tmp
-*.class
+
+# 의존성 폴더
+node_modules/
+
+# 환경 설정 파일
+.env
+.env.local
+
+# 기타
+.kotlin/
