@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
     private final HUD hud;
 
     private final JButton pauseButton;
+    private final JButton mainMenuButton;
 
     public GamePanel(GameMain gameMain) {
         this.gameMain = gameMain;
@@ -66,7 +67,19 @@ public class GamePanel extends JPanel implements Runnable {
         pauseButton.setFocusable(false);
         pauseButton.setBounds(GameConstants.SCREEN_WIDTH - 120, 10, 100, 30);
         pauseButton.addActionListener(e -> togglePause());
+        pauseButton.setVisible(false);
         add(pauseButton);
+
+        mainMenuButton = new JButton("MAIN MENU");
+        mainMenuButton.setFocusable(false);
+        int menuButtonWidth = 180;
+        int menuButtonHeight = 40;
+        int menuButtonX = (GameConstants.SCREEN_WIDTH - menuButtonWidth) / 2;
+        int menuButtonY = (GameConstants.SCREEN_HEIGHT - menuButtonHeight) / 2 + 60;
+        mainMenuButton.setBounds(menuButtonX, menuButtonY, menuButtonWidth, menuButtonHeight);
+        mainMenuButton.addActionListener(e -> returnToMainMenu());
+        mainMenuButton.setVisible(false);
+        add(mainMenuButton);
 
         // 자동공격 활성화
         shooting = true;
@@ -174,8 +187,20 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void togglePause() {
-        paused = !paused;
+        setPaused(!paused);
+    }
+
+    private void setPaused(boolean paused) {
+        this.paused = paused;
         pauseButton.setText(paused ? "RESUME" : "PAUSE");
+        pauseButton.setVisible(paused);
+        mainMenuButton.setVisible(paused);
+    }
+
+    private void returnToMainMenu() {
+        running = false;
+        setPaused(false);
+        SwingUtilities.invokeLater(() -> gameMain.showMainMenu());
     }
 
     @Override
@@ -497,7 +522,7 @@ public class GamePanel extends JPanel implements Runnable {
         String text = "PAUSED";
         FontMetrics fm = g2.getFontMetrics();
         int x = (GameConstants.SCREEN_WIDTH - fm.stringWidth(text)) / 2;
-        int y = (GameConstants.SCREEN_HEIGHT - fm.getHeight()) / 2 + fm.getAscent();
+        int y = (GameConstants.SCREEN_HEIGHT - fm.getAscent()) / 2;
         g2.drawString(text, x, y);
     }
 

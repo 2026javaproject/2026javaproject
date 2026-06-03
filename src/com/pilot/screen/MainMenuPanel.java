@@ -16,9 +16,9 @@ import java.text.DecimalFormat;
 public class MainMenuPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 
     private static final String[] BUTTON_LABELS = {
-            "1 START GAME",
-            "2 HIGH SCORE",
-            "3 EXIT"
+            "START GAME",
+            "HIGH SCORE",
+            "EXIT"
     };
     private static final int BUTTON_WIDTH = 240;
     private static final int BUTTON_HEIGHT = 56;
@@ -73,8 +73,17 @@ public class MainMenuPanel extends JPanel implements MouseListener, MouseMotionL
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        Font titleFont = new Font("Dialog", Font.BOLD, 64);
         Font buttonFont = new Font("Dialog", Font.BOLD, 20);
         Font bestFont = new Font("Dialog", Font.PLAIN, 18);
+
+        g2.setFont(titleFont);
+        g2.setColor(Color.WHITE);
+        String title = "PILOT";
+        FontMetrics titleFm = g2.getFontMetrics();
+        int titleX = (GameConstants.SCREEN_WIDTH - titleFm.stringWidth(title)) / 2;
+        int titleY = 160;
+        g2.drawString(title, titleX, titleY);
 
         int activeIndex = hoveredIndex >= 0 ? hoveredIndex : selectedIndex;
 
