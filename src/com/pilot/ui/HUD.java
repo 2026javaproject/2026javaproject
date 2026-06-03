@@ -61,7 +61,7 @@ public class HUD {
         g2.drawString("SCORE: " + score, 12, 22);
         g2.drawString("STAGE: " + stage, 12, 46);
         g2.drawString("KILL: " + kills, 12, 70);
-        drawHearts(g2, 12, 94, hp);
+        drawHearts(g2, 400, 20, hp);
         drawShieldIcon(g2, 140, 44, shieldActive);
 
         if (warningActive && warningVisible) {
