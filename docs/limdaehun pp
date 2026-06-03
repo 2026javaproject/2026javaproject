@@ -1,6 +1,6 @@
 1) MainMenuPanel.java 파일에 START GAME, HIGH SCORE, EXIT 버튼 구현
 
-src\screen 디렉터리의 MainMenuPanel.java 파일에
+src\pilot.screen 디렉터리의 MainMenuPanel.java 파일에
 1. START GAME 버튼 구현
 2. HIGH SCORE 버튼 구현
 3. EXIT 버튼 구현

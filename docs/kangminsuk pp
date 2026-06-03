@@ -33,7 +33,7 @@
 4. 창 크기는 GameConstants에 있는 SCREEN_WIDTH, SCREEN_HEIGHT 써줘
    창 크기 고정(setResizable false)이랑 가운데 정렬(setLocationRelativeTo null) 해줘
 
-5. main 메서드는 SwingUtilities.invokeLater로 실행해줘
+5. pilot.main 메서드는 SwingUtilities.invokeLater로 실행해줘
 
 ---
 
