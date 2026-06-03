@@ -59,16 +59,15 @@ public class HUD {
         g2.setFont(HUD_FONT);
         g2.setColor(Color.WHITE);
         g2.drawString("SCORE: " + score, 12, 22);
-        g2.drawString("KILL: " + kills, 12, 72);
-        drawHearts(g2, 12, 32, hp);
-        g2.setColor(Color.WHITE);
-        g2.drawString("STAGE: " + stage, 12, 62);
+        g2.drawString("STAGE: " + stage, 12, 46);
+        g2.drawString("KILL: " + kills, 12, 70);
+        drawHearts(g2, 12, 94, hp);
         drawShieldIcon(g2, 140, 44, shieldActive);
 
         if (warningActive && warningVisible) {
             g2.setFont(WARNING_FONT);
             g2.setColor(Color.RED);
-            String text = "WARNING, WARNING";
+            String text = "WARNING! WARNING!";
             FontMetrics fm = g2.getFontMetrics();
             int x = (GameConstants.SCREEN_WIDTH - fm.stringWidth(text)) / 2;
             int y = GameConstants.SCREEN_HEIGHT / 2;
