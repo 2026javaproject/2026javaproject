@@ -71,7 +71,7 @@ public class Player {
         // Level 1: 1발 (중앙)
         // Level 2: 2발 (중앙 + 오른쪽)
         // Level 3: 3발 (중앙 + 양옆)
-        // Level 4: 4발 (중앙 + 양옆 2개 + 오른쪽)
+
         
         bullets.add(new Bullet(bx, y, 0, -GameConstants.BULLET_SPEED, true)); // 중앙
         
@@ -81,9 +81,7 @@ public class Player {
         if (weaponLevel >= 3) {
             bullets.add(new Bullet(bx - 15, y, -2, -GameConstants.BULLET_SPEED, true)); // 좌측
         }
-        if (weaponLevel >= 4) {
-            bullets.add(new Bullet(bx + 30, y, 4, -GameConstants.BULLET_SPEED, true)); // 우측 2
-        }
+
     }
 
     public void hit() {
