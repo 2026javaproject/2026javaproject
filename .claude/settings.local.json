@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where pdftotext *)",
+      "WebFetch(domain:andy-yun.github.io)"
+    ]
+  }
+}
