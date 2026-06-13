@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>메인 · 화면전환 · PILOT</title><style>
+:root{
+  --bg:#f6f7f9; --ink:#0f172a; --muted:#5b6472; --line:#e6e8ec;
+  --card:#ffffff; --accent:#2563eb; --accent-soft:#eaf0ff;
+  --code-bg:#0f172a; --code-ink:#e2e8f0; --code-cmt:#7dd3a0; --code-kw:#f0a868;
+  --code-str:#9ece6a; --code-num:#7aa2f7; --code-type:#7ad0c8;
+}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;
+  margin:0;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:rgba(246,247,249,.85);
+  backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:14px;height:58px}
+.brand{font-weight:800;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.brand small{font-weight:600;color:var(--muted);margin-left:8px;font-size:.8rem}
+.back{margin-left:auto;text-decoration:none;color:var(--accent);font-weight:600;font-size:.92rem}
+
+.hero{padding:54px 0 18px}
+.hero .eyebrow{color:var(--accent);font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{margin:.3em 0 .15em;font-size:2.2rem;letter-spacing:-.02em}
+.hero p{color:var(--muted);margin:0;max-width:60ch}
+
+ul.cards{list-style:none;padding:0;margin:28px 0 60px;display:grid;
+  grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:720px){ul.cards{grid-template-columns:1fr}}
+ul.cards a{display:flex;flex-direction:column;gap:6px;padding:18px 18px;border:1px solid var(--line);
+  border-radius:16px;text-decoration:none;color:inherit;background:var(--card);
+  box-shadow:0 1px 2px rgba(16,24,40,.04);transition:.15s}
+ul.cards a:hover{border-color:#c7d2fe;box-shadow:0 8px 24px rgba(37,99,235,.10);transform:translateY(-2px)}
+.cnum{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.08em}
+.ctitle{font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
+.cdesc{color:var(--muted);font-size:.9rem}
+.cfiles{margin-top:6px;font-size:.78rem;color:#94a0b0;font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.part{margin:42px 0;border-top:1px solid var(--line);padding-top:28px}
+.part:first-of-type{border-top:0}
+.part-head{margin-bottom:16px}
+.part-head .pn{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.78rem;font-weight:700;color:var(--accent);background:var(--accent-soft);
+  padding:3px 9px;border-radius:999px;margin-bottom:8px}
+.part-head h2{margin:.1em 0;font-size:1.4rem;letter-spacing:-.01em}
+.part-head .psub{color:var(--muted);margin:0}
+
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}
+@media(max-width:880px){.split{grid-template-columns:1fr}}
+.code-col{background:var(--code-bg);border-radius:14px;overflow:hidden;border:1px solid #1e293b}
+.code-col .cap{color:#93a4bd;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;
+  padding:9px 14px;border-bottom:1px solid #1e293b;background:#0b1220}
+.code-col pre{margin:0;padding:14px 16px;overflow-x:auto}
+.code-col code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--code-ink);
+  white-space:pre;line-height:1.65}
+.exp-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.exp-col h4{margin:.2em 0 .5em;font-size:.98rem}
+.exp-col p{margin:.5em 0;font-size:.93rem}
+.exp-col ul{margin:.4em 0;padding-left:1.1em}
+.exp-col li{margin:.35em 0;font-size:.92rem}
+.exp-col .key{background:var(--accent-soft);color:#1e3a8a;border-radius:6px;padding:0 5px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
+.exp-col .math{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px 12px;margin:10px 0;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.7;overflow-x:auto;white-space:pre}
+.warn{border-left:3px solid #f59e0b;background:#fffbeb;padding:8px 12px;border-radius:0 8px 8px 0;
+  font-size:.9rem;color:#92400e;margin:10px 0}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin:48px 0 64px;border-top:1px solid var(--line);padding-top:22px}
+.pager a{flex:1;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:12px;
+  padding:12px 16px;background:var(--card);transition:.15s}
+.pager a:hover{border-color:#c7d2fe}
+.pager .lbl{font-size:.74rem;color:var(--muted)}
+.pager .nm{font-weight:700;color:var(--accent)}
+.pager .next{text-align:right}
+.pager .ghost{visibility:hidden}
+footer{color:#9aa4b2;font-size:.82rem;text-align:center;padding:30px 0 50px}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="./index.html">PILOT<small>핵심 코드 발표</small></a><a class="back" href="./index.html">← 목차</a></div></header><main class="wrap"><div class="hero"><div class="eyebrow">08 / 메인 · 화면전환</div><h1>메인 · 화면전환</h1><p>JFrame 화면 전환과 EDT 진입점</p></div><section class="part"><div class="part-head"><span class="pn">8-1</span><h2>화면 전환 — setContentPane 한 줄로 교체</h2><p class="psub">메뉴 → 게임 → 게임오버를 패널 교체로 전환.</p></div><div class="split"><div class="code-col"><div class="cap">GameMain.java</div><pre><code>public class GameMain extends JFrame {
+    public void startGame() {
+        gamePanel = new GamePanel(this);
+        setContentPane(gamePanel);   // 콘텐츠 영역 통째 교체
+        revalidate();                // 레이아웃 재계산
+        gamePanel.startGameLoop();   // 게임 루프 시작
+    }
+    public void showGameOver(int score) {
+        setContentPane(new GameOverPanel(this, score));
+        revalidate();
+    }
+}</code></pre></div><div class="exp-col"><h4>JFrame 상속 구조</h4>
+  <ul>
+    <li><span class="key">extends JFrame</span> → this가 곧 창. <span class="key">setContentPane()</span> 한 줄로 화면 전체 내용을 바꿉니다.</li>
+    <li>각 패널 생성 시 <span class="key">this</span>(GameMain)를 넘겨, 패널이 다시 GameMain의 화면전환 메서드를 호출할 수 있게 합니다.</li>
+    <li><span class="key">revalidate()</span>로 새 패널 레이아웃을 다시 계산.</li>
+  </ul></div></div></section><section class="part"><div class="part-head"><span class="pn">8-2</span><h2>main — EDT에서 GUI 생성</h2><p class="psub">Swing 규칙: GUI는 이벤트 디스패치 스레드에서 만들어야 안전.</p></div><div class="split"><div class="code-col"><div class="cap">GameMain.java</div><pre><code>public static void main(String[] args) {
+    SwingUtilities.invokeLater(GameMain::new);
+}</code></pre></div><div class="exp-col"><h4>왜 invokeLater인가</h4>
+  <ul>
+    <li>Swing 컴포넌트는 반드시 <b>EDT(Event Dispatch Thread)</b>에서 생성·수정해야 합니다.</li>
+    <li>main 스레드에서 바로 만들면 <b>렌더링 깨짐·경쟁 상태</b> 같은 비결정적 버그 위험.</li>
+    <li><span class="key">GameMain::new</span> : 메서드 참조로 생성자를 EDT 작업 큐에 등록.</li>
+  </ul></div></div></section><section class="part"><div class="part-head"><span class="pn">8-3</span><h2>생성자 — 창 기본 설정</h2><p class="psub">제목·크기·종료동작·위치를 정하고 첫 화면을 띄움.</p></div><div class="split"><div class="code-col"><div class="cap">GameMain.java</div><pre><code>public GameMain() {
+    setTitle(&quot;PILOT&quot;);
+    setSize(SCREEN_WIDTH, SCREEN_HEIGHT);          // 480×720
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// X → 프로세스 종료
+    setResizable(false);                           // 크기 고정
+    setLocationRelativeTo(null);                   // 화면 중앙
+    showMainMenu();                                // 첫 화면
+    setVisible(true);
+}</code></pre></div><div class="exp-col"><h4>설정 포인트</h4>
+  <ul>
+    <li><span class="key">setResizable(false)</span> : 모든 좌표가 480×720을 가정하므로 크기를 고정합니다.</li>
+    <li><span class="key">setLocationRelativeTo(null)</span> : 창을 모니터 중앙에 배치.</li>
+    <li>크기를 상수로 받아 다른 클래스(좌표 계산)와 항상 일치시킵니다.</li>
+  </ul>
+  <div class="warn">⚠ setSize는 타이틀바 포함 크기 → 실제 게임 영역은 조금 작아질 수 있음(getContentPane 기준 권장).</div></div></div></section><div class="pager"><a href="./util.html"><div class="lbl">← 이전</div><div class="nm">07. 유틸 · 저장</div></a><a class="ghost">.</a></div></main><footer>PILOT — Java Swing 2D Shooter · 강민석 · 임대훈</footer>
+<script>
+document.querySelectorAll('.code-col code').forEach(function(code){
+  var KW=new Set(('package import public private protected static final class abstract extends implements '+
+   'interface enum void int long double float boolean char new return if else for while do switch case break '+
+   'continue default this super null true false try catch throws synchronized').split(' '));
+  var t=code.textContent, re=/(\/\/[^\n]*)|("(?:[^"\\]|\\.)*")|(\b\d+\.?\d*[fFdDlL]?\b)|([A-Za-z_]\w*)/g, out='', last=0, m;
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  while((m=re.exec(t))){
+    out+=esc(t.slice(last,m.index));
+    var tok=m[0], cls=null;
+    if(m[1])cls='c-cmt'; else if(m[2])cls='c-str'; else if(m[3])cls='c-num';
+    else if(m[4]){ if(KW.has(tok))cls='c-kw'; else if(/^[A-Z]/.test(tok))cls='c-type'; }
+    out+= cls? '<span class="'+cls+'">'+esc(tok)+'</span>' : esc(tok);
+    last=re.lastIndex;
+  }
+  out+=esc(t.slice(last));
+  code.innerHTML=out;
+});
+</script>
+<style>
+.c-cmt{color:var(--code-cmt)} .c-kw{color:var(--code-kw);font-weight:600}
+.c-str{color:var(--code-str)} .c-num{color:var(--code-num)} .c-type{color:var(--code-type)}
+</style>
+</body></html>

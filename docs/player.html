@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>플레이어 · 총알 · PILOT</title><style>
+:root{
+  --bg:#f6f7f9; --ink:#0f172a; --muted:#5b6472; --line:#e6e8ec;
+  --card:#ffffff; --accent:#2563eb; --accent-soft:#eaf0ff;
+  --code-bg:#0f172a; --code-ink:#e2e8f0; --code-cmt:#7dd3a0; --code-kw:#f0a868;
+  --code-str:#9ece6a; --code-num:#7aa2f7; --code-type:#7ad0c8;
+}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;
+  margin:0;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:rgba(246,247,249,.85);
+  backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:14px;height:58px}
+.brand{font-weight:800;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.brand small{font-weight:600;color:var(--muted);margin-left:8px;font-size:.8rem}
+.back{margin-left:auto;text-decoration:none;color:var(--accent);font-weight:600;font-size:.92rem}
+
+.hero{padding:54px 0 18px}
+.hero .eyebrow{color:var(--accent);font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{margin:.3em 0 .15em;font-size:2.2rem;letter-spacing:-.02em}
+.hero p{color:var(--muted);margin:0;max-width:60ch}
+
+ul.cards{list-style:none;padding:0;margin:28px 0 60px;display:grid;
+  grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:720px){ul.cards{grid-template-columns:1fr}}
+ul.cards a{display:flex;flex-direction:column;gap:6px;padding:18px 18px;border:1px solid var(--line);
+  border-radius:16px;text-decoration:none;color:inherit;background:var(--card);
+  box-shadow:0 1px 2px rgba(16,24,40,.04);transition:.15s}
+ul.cards a:hover{border-color:#c7d2fe;box-shadow:0 8px 24px rgba(37,99,235,.10);transform:translateY(-2px)}
+.cnum{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.08em}
+.ctitle{font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
+.cdesc{color:var(--muted);font-size:.9rem}
+.cfiles{margin-top:6px;font-size:.78rem;color:#94a0b0;font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.part{margin:42px 0;border-top:1px solid var(--line);padding-top:28px}
+.part:first-of-type{border-top:0}
+.part-head{margin-bottom:16px}
+.part-head .pn{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.78rem;font-weight:700;color:var(--accent);background:var(--accent-soft);
+  padding:3px 9px;border-radius:999px;margin-bottom:8px}
+.part-head h2{margin:.1em 0;font-size:1.4rem;letter-spacing:-.01em}
+.part-head .psub{color:var(--muted);margin:0}
+
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}
+@media(max-width:880px){.split{grid-template-columns:1fr}}
+.code-col{background:var(--code-bg);border-radius:14px;overflow:hidden;border:1px solid #1e293b}
+.code-col .cap{color:#93a4bd;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;
+  padding:9px 14px;border-bottom:1px solid #1e293b;background:#0b1220}
+.code-col pre{margin:0;padding:14px 16px;overflow-x:auto}
+.code-col code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--code-ink);
+  white-space:pre;line-height:1.65}
+.exp-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.exp-col h4{margin:.2em 0 .5em;font-size:.98rem}
+.exp-col p{margin:.5em 0;font-size:.93rem}
+.exp-col ul{margin:.4em 0;padding-left:1.1em}
+.exp-col li{margin:.35em 0;font-size:.92rem}
+.exp-col .key{background:var(--accent-soft);color:#1e3a8a;border-radius:6px;padding:0 5px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
+.exp-col .math{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px 12px;margin:10px 0;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.7;overflow-x:auto;white-space:pre}
+.warn{border-left:3px solid #f59e0b;background:#fffbeb;padding:8px 12px;border-radius:0 8px 8px 0;
+  font-size:.9rem;color:#92400e;margin:10px 0}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin:48px 0 64px;border-top:1px solid var(--line);padding-top:22px}
+.pager a{flex:1;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:12px;
+  padding:12px 16px;background:var(--card);transition:.15s}
+.pager a:hover{border-color:#c7d2fe}
+.pager .lbl{font-size:.74rem;color:var(--muted)}
+.pager .nm{font-weight:700;color:var(--accent)}
+.pager .next{text-align:right}
+.pager .ghost{visibility:hidden}
+footer{color:#9aa4b2;font-size:.82rem;text-align:center;padding:30px 0 50px}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="./index.html">PILOT<small>핵심 코드 발표</small></a><a class="back" href="./index.html">← 목차</a></div></header><main class="wrap"><div class="hero"><div class="eyebrow">03 / 플레이어 · 총알</div><h1>플레이어 · 총알</h1><p>이동/클램핑/버프 타이머와 무기 레벨별 탄 발사 벡터</p></div><section class="part"><div class="part-head"><span class="pn">3-1</span><h2>Player.update — 이동·경계 클램핑·타이머</h2><p class="psub">방향키로 이동하고, 화면 밖 이탈을 막고, 모든 버프 타이머를 1씩 감소.</p></div><div class="split"><div class="code-col"><div class="cap">Player.java</div><pre><code>public void update() {
+    int speed = speedBuffTimer &gt; 0 ? BASE_SPEED+2 : BASE_SPEED; // 버프 시 +2
+    if (left)  x -= speed;   if (right) x += speed;
+    if (up)    y -= speed;   if (down)  y += speed;
+
+    x = Math.max(0, Math.min(x, SCREEN_WIDTH  - PLAYER_WIDTH));  // 좌우 가둠
+    y = Math.max(0, Math.min(y, SCREEN_HEIGHT - PLAYER_HEIGHT)); // 상하 가둠
+
+    if (invincible) { invincibleTimer--; if (invincibleTimer&lt;=0) invincible=false; }
+    if (speedBuffTimer&gt;0) speedBuffTimer--;
+    if (shieldTimer&gt;0)  { shieldTimer--;  if (shieldTimer&lt;=0) shieldActive=false; }
+    if (attackSpeedBuffTimer&gt;0) attackSpeedBuffTimer--;
+}</code></pre></div><div class="exp-col"><h4>두 가지 패턴</h4>
+  <ul>
+    <li><b>클램핑</b>: <span class="key">Math.max(0, Math.min(x, 최대))</span>로 좌표를 0~경계 사이에 강제로 가둬 화면 밖으로 못 나가게 합니다.</li>
+    <li><b>프레임 타이머</b>: 무적·속도·실드·공속 버프 모두 정수 카운터 하나로 관리. 매 프레임 <span class="key">--</span> 하다 0이 되면 효과 해제.</li>
+    <li>좌표계 주의: 자바는 <b>위가 0, 아래로 갈수록 y 증가</b> → 위로 가려면 <span class="key">y -=</span>.</li>
+  </ul></div></div></section><section class="part"><div class="part-head"><span class="pn">3-2</span><h2>Player.shoot — 무기 레벨별 탄 벡터</h2><p class="psub">레벨이 오를수록 중앙 + 좌우로 퍼지는 총알이 누적 발사됨.</p></div><div class="split"><div class="code-col"><div class="cap">Player.java</div><pre><code>public void shoot() {
+    int bx = x + PLAYER_WIDTH/2 - BULLET_WIDTH/2;   // 정중앙 정렬
+
+    bullets.add(new Bullet(bx, y, 0, -BULLET_SPEED, true));        // 중앙: 위로 직진
+    if (weaponLevel &gt;= 2)
+        bullets.add(new Bullet(bx+15, y,  2, -BULLET_SPEED, true)); // 우측 퍼짐
+    if (weaponLevel &gt;= 3)
+        bullets.add(new Bullet(bx-15, y, -2, -BULLET_SPEED, true)); // 좌측 퍼짐
+}</code></pre></div><div class="exp-col"><h4>속도벡터 (dx, dy)로 방향 표현</h4>
+  <div class="math">중앙 : (dx=0,  dy=-5)  → 똑바로 위
+우측 : (dx=+2, dy=-5)  → 위+오른쪽 대각
+좌측 : (dx=-2, dy=-5)  → 위+왼쪽 대각</div>
+  <ul>
+    <li><span class="key">dy = -BULLET_SPEED</span> : 음수라서 위로 올라갑니다.</li>
+    <li><span class="key">dx</span>로 좌우 퍼짐을 표현 — 부호와 크기가 곧 방향.</li>
+    <li>if문이 <b>누적</b>이라 레벨3이면 중앙+우+좌 3발이 동시에 나갑니다.</li>
+  </ul>
+  <div class="warn">⚠ weaponLevel은 4까지 오르지만 shoot()엔 3까지만 분기 → 레벨4는 레벨3과 동일(미구현).</div></div></div></section><section class="part"><div class="part-head"><span class="pn">3-3</span><h2>Bullet — 직선 등속 이동과 화면 밖 판정</h2><p class="psub">생성 시 정해진 속도벡터로만 직진하고, 화면을 벗어나면 제거 대상이 됨.</p></div><div class="split"><div class="code-col"><div class="cap">Bullet.java</div><pre><code>private final int dx, dy;   // final → 생성 후 방향 고정
+
+public void update() {
+    x += dx;   // 매 프레임 같은 양만큼
+    y += dy;   // 누적 = 등속 직선운동
+}
+
+public boolean isOutOfBounds() {
+    return y + BULLET_HEIGHT &lt; 0     // 위로 벗어남
+        || y &gt; SCREEN_HEIGHT         // 아래로 벗어남
+        || x &lt; 0 || x &gt; SCREEN_WIDTH;// 좌우로 벗어남
+}</code></pre></div><div class="exp-col"><h4>왜 dx, dy가 final인가</h4>
+  <ul>
+    <li>생성 시점의 속도벡터로만 움직여 <b>예측 가능한 직선 탄</b>이 됩니다(추적탄도 발사 후엔 직진).</li>
+    <li><span class="key">isOutOfBounds()</span>가 true면 GamePanel이 리스트에서 제거 → 총알이 무한히 쌓이는 <b>메모리 누수 방지</b>.</li>
+    <li>플레이어 총알(위로)과 적 총알(아래로)을 한 클래스로 처리하고, <span class="key">playerBullet</span> 플래그로만 구분합니다.</li>
+  </ul></div></div></section><div class="pager"><a href="./boss.html"><div class="lbl">← 이전</div><div class="nm">02. 보스 전투</div></a><a class="next" href="./collision.html"><div class="lbl">다음 →</div><div class="nm">04. 충돌 시스템</div></a></div></main><footer>PILOT — Java Swing 2D Shooter · 강민석 · 임대훈</footer>
+<script>
+document.querySelectorAll('.code-col code').forEach(function(code){
+  var KW=new Set(('package import public private protected static final class abstract extends implements '+
+   'interface enum void int long double float boolean char new return if else for while do switch case break '+
+   'continue default this super null true false try catch throws synchronized').split(' '));
+  var t=code.textContent, re=/(\/\/[^\n]*)|("(?:[^"\\]|\\.)*")|(\b\d+\.?\d*[fFdDlL]?\b)|([A-Za-z_]\w*)/g, out='', last=0, m;
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  while((m=re.exec(t))){
+    out+=esc(t.slice(last,m.index));
+    var tok=m[0], cls=null;
+    if(m[1])cls='c-cmt'; else if(m[2])cls='c-str'; else if(m[3])cls='c-num';
+    else if(m[4]){ if(KW.has(tok))cls='c-kw'; else if(/^[A-Z]/.test(tok))cls='c-type'; }
+    out+= cls? '<span class="'+cls+'">'+esc(tok)+'</span>' : esc(tok);
+    last=re.lastIndex;
+  }
+  out+=esc(t.slice(last));
+  code.innerHTML=out;
+});
+</script>
+<style>
+.c-cmt{color:var(--code-cmt)} .c-kw{color:var(--code-kw);font-weight:600}
+.c-str{color:var(--code-str)} .c-num{color:var(--code-num)} .c-type{color:var(--code-type)}
+</style>
+</body></html>

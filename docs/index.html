@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>PILOT — 핵심 코드 발표</title><style>
+:root{
+  --bg:#f6f7f9; --ink:#0f172a; --muted:#5b6472; --line:#e6e8ec;
+  --card:#ffffff; --accent:#2563eb; --accent-soft:#eaf0ff;
+  --code-bg:#0f172a; --code-ink:#e2e8f0; --code-cmt:#7dd3a0; --code-kw:#f0a868;
+  --code-str:#9ece6a; --code-num:#7aa2f7; --code-type:#7ad0c8;
+}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;
+  margin:0;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:rgba(246,247,249,.85);
+  backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:14px;height:58px}
+.brand{font-weight:800;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.brand small{font-weight:600;color:var(--muted);margin-left:8px;font-size:.8rem}
+.back{margin-left:auto;text-decoration:none;color:var(--accent);font-weight:600;font-size:.92rem}
+
+.hero{padding:54px 0 18px}
+.hero .eyebrow{color:var(--accent);font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{margin:.3em 0 .15em;font-size:2.2rem;letter-spacing:-.02em}
+.hero p{color:var(--muted);margin:0;max-width:60ch}
+
+ul.cards{list-style:none;padding:0;margin:28px 0 60px;display:grid;
+  grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:720px){ul.cards{grid-template-columns:1fr}}
+ul.cards a{display:flex;flex-direction:column;gap:6px;padding:18px 18px;border:1px solid var(--line);
+  border-radius:16px;text-decoration:none;color:inherit;background:var(--card);
+  box-shadow:0 1px 2px rgba(16,24,40,.04);transition:.15s}
+ul.cards a:hover{border-color:#c7d2fe;box-shadow:0 8px 24px rgba(37,99,235,.10);transform:translateY(-2px)}
+.cnum{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.08em}
+.ctitle{font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
+.cdesc{color:var(--muted);font-size:.9rem}
+.cfiles{margin-top:6px;font-size:.78rem;color:#94a0b0;font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.part{margin:42px 0;border-top:1px solid var(--line);padding-top:28px}
+.part:first-of-type{border-top:0}
+.part-head{margin-bottom:16px}
+.part-head .pn{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.78rem;font-weight:700;color:var(--accent);background:var(--accent-soft);
+  padding:3px 9px;border-radius:999px;margin-bottom:8px}
+.part-head h2{margin:.1em 0;font-size:1.4rem;letter-spacing:-.01em}
+.part-head .psub{color:var(--muted);margin:0}
+
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}
+@media(max-width:880px){.split{grid-template-columns:1fr}}
+.code-col{background:var(--code-bg);border-radius:14px;overflow:hidden;border:1px solid #1e293b}
+.code-col .cap{color:#93a4bd;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;
+  padding:9px 14px;border-bottom:1px solid #1e293b;background:#0b1220}
+.code-col pre{margin:0;padding:14px 16px;overflow-x:auto}
+.code-col code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--code-ink);
+  white-space:pre;line-height:1.65}
+.exp-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.exp-col h4{margin:.2em 0 .5em;font-size:.98rem}
+.exp-col p{margin:.5em 0;font-size:.93rem}
+.exp-col ul{margin:.4em 0;padding-left:1.1em}
+.exp-col li{margin:.35em 0;font-size:.92rem}
+.exp-col .key{background:var(--accent-soft);color:#1e3a8a;border-radius:6px;padding:0 5px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
+.exp-col .math{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px 12px;margin:10px 0;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.7;overflow-x:auto;white-space:pre}
+.warn{border-left:3px solid #f59e0b;background:#fffbeb;padding:8px 12px;border-radius:0 8px 8px 0;
+  font-size:.9rem;color:#92400e;margin:10px 0}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin:48px 0 64px;border-top:1px solid var(--line);padding-top:22px}
+.pager a{flex:1;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:12px;
+  padding:12px 16px;background:var(--card);transition:.15s}
+.pager a:hover{border-color:#c7d2fe}
+.pager .lbl{font-size:.74rem;color:var(--muted)}
+.pager .nm{font-weight:700;color:var(--accent)}
+.pager .next{text-align:right}
+.pager .ghost{visibility:hidden}
+footer{color:#9aa4b2;font-size:.82rem;text-align:center;padding:30px 0 50px}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="./index.html">PILOT<small>핵심 코드 발표</small></a></div></header><main class="wrap"><div class="hero"><div class="eyebrow">Java Swing · 2D Shooter</div><h1>PILOT 핵심 코드 발표</h1><p>패키지·기능별로 묶어, 각 주제마다 핵심 코드 3가지를 코드(왼쪽)와 설명(오른쪽)으로 정리했습니다. 아래 항목을 눌러 이동하세요.</p></div><ul class="cards"><li><a href="./enemy.html"><span class="cnum">01</span><span class="ctitle">적 시스템</span><span class="cdesc">상속·다형성으로 묶인 적 3종과, 스테이지별로 적을 뽑아 스폰하는 매니저</span><span class="cfiles">Enemy · EnemyTypeA/B/C · EnemyManager</span></a></li><li><a href="./boss.html"><span class="cnum">02</span><span class="ctitle">보스 전투</span><span class="cdesc">2페이즈 전환과 부채꼴·추적 탄막의 벡터 계산</span><span class="cfiles">BossEnemy</span></a></li><li><a href="./player.html"><span class="cnum">03</span><span class="ctitle">플레이어 · 총알</span><span class="cdesc">이동/클램핑/버프 타이머와 무기 레벨별 탄 발사 벡터</span><span class="cfiles">Player · Bullet</span></a></li><li><a href="./collision.html"><span class="cnum">04</span><span class="ctitle">충돌 시스템</span><span class="cdesc">AABB 충돌과 역순 순회, 다형성 데미지 적용</span><span class="cfiles">CollisionDetector</span></a></li><li><a href="./item.html"><span class="cnum">05</span><span class="ctitle">아이템</span><span class="cdesc">enum 기반 효과와 sin 반짝임, 확률 드롭</span><span class="cfiles">PowerUpItem · ItemManager</span></a></li><li><a href="./score.html"><span class="cnum">06</span><span class="ctitle">점수 · 스테이지</span><span class="cdesc">처치 누적·보스 등장 판정·스테이지 진행</span><span class="cfiles">ScoreManager</span></a></li><li><a href="./util.html"><span class="cnum">07</span><span class="ctitle">유틸 · 저장</span><span class="cdesc">프레임 기반 상수와 방어적 파일 입출력</span><span class="cfiles">GameConstants · HighScoreFileIO</span></a></li><li><a href="./main.html"><span class="cnum">08</span><span class="ctitle">메인 · 화면전환</span><span class="cdesc">JFrame 화면 전환과 EDT 진입점</span><span class="cfiles">GameMain</span></a></li></ul></main><footer>PILOT — Java Swing 2D Shooter · 강민석 · 임대훈</footer></body></html>

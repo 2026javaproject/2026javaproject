@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>보스 전투 · PILOT</title><style>
+:root{
+  --bg:#f6f7f9; --ink:#0f172a; --muted:#5b6472; --line:#e6e8ec;
+  --card:#ffffff; --accent:#2563eb; --accent-soft:#eaf0ff;
+  --code-bg:#0f172a; --code-ink:#e2e8f0; --code-cmt:#7dd3a0; --code-kw:#f0a868;
+  --code-str:#9ece6a; --code-num:#7aa2f7; --code-type:#7ad0c8;
+}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;
+  margin:0;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:rgba(246,247,249,.85);
+  backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:14px;height:58px}
+.brand{font-weight:800;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.brand small{font-weight:600;color:var(--muted);margin-left:8px;font-size:.8rem}
+.back{margin-left:auto;text-decoration:none;color:var(--accent);font-weight:600;font-size:.92rem}
+
+.hero{padding:54px 0 18px}
+.hero .eyebrow{color:var(--accent);font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{margin:.3em 0 .15em;font-size:2.2rem;letter-spacing:-.02em}
+.hero p{color:var(--muted);margin:0;max-width:60ch}
+
+ul.cards{list-style:none;padding:0;margin:28px 0 60px;display:grid;
+  grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:720px){ul.cards{grid-template-columns:1fr}}
+ul.cards a{display:flex;flex-direction:column;gap:6px;padding:18px 18px;border:1px solid var(--line);
+  border-radius:16px;text-decoration:none;color:inherit;background:var(--card);
+  box-shadow:0 1px 2px rgba(16,24,40,.04);transition:.15s}
+ul.cards a:hover{border-color:#c7d2fe;box-shadow:0 8px 24px rgba(37,99,235,.10);transform:translateY(-2px)}
+.cnum{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.08em}
+.ctitle{font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
+.cdesc{color:var(--muted);font-size:.9rem}
+.cfiles{margin-top:6px;font-size:.78rem;color:#94a0b0;font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.part{margin:42px 0;border-top:1px solid var(--line);padding-top:28px}
+.part:first-of-type{border-top:0}
+.part-head{margin-bottom:16px}
+.part-head .pn{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.78rem;font-weight:700;color:var(--accent);background:var(--accent-soft);
+  padding:3px 9px;border-radius:999px;margin-bottom:8px}
+.part-head h2{margin:.1em 0;font-size:1.4rem;letter-spacing:-.01em}
+.part-head .psub{color:var(--muted);margin:0}
+
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}
+@media(max-width:880px){.split{grid-template-columns:1fr}}
+.code-col{background:var(--code-bg);border-radius:14px;overflow:hidden;border:1px solid #1e293b}
+.code-col .cap{color:#93a4bd;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;
+  padding:9px 14px;border-bottom:1px solid #1e293b;background:#0b1220}
+.code-col pre{margin:0;padding:14px 16px;overflow-x:auto}
+.code-col code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--code-ink);
+  white-space:pre;line-height:1.65}
+.exp-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.exp-col h4{margin:.2em 0 .5em;font-size:.98rem}
+.exp-col p{margin:.5em 0;font-size:.93rem}
+.exp-col ul{margin:.4em 0;padding-left:1.1em}
+.exp-col li{margin:.35em 0;font-size:.92rem}
+.exp-col .key{background:var(--accent-soft);color:#1e3a8a;border-radius:6px;padding:0 5px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
+.exp-col .math{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px 12px;margin:10px 0;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.7;overflow-x:auto;white-space:pre}
+.warn{border-left:3px solid #f59e0b;background:#fffbeb;padding:8px 12px;border-radius:0 8px 8px 0;
+  font-size:.9rem;color:#92400e;margin:10px 0}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin:48px 0 64px;border-top:1px solid var(--line);padding-top:22px}
+.pager a{flex:1;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:12px;
+  padding:12px 16px;background:var(--card);transition:.15s}
+.pager a:hover{border-color:#c7d2fe}
+.pager .lbl{font-size:.74rem;color:var(--muted)}
+.pager .nm{font-weight:700;color:var(--accent)}
+.pager .next{text-align:right}
+.pager .ghost{visibility:hidden}
+footer{color:#9aa4b2;font-size:.82rem;text-align:center;padding:30px 0 50px}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="./index.html">PILOT<small>핵심 코드 발표</small></a><a class="back" href="./index.html">← 목차</a></div></header><main class="wrap"><div class="hero"><div class="eyebrow">02 / 보스 전투</div><h1>보스 전투</h1><p>2페이즈 전환과 부채꼴·추적 탄막의 벡터 계산</p></div><section class="part"><div class="part-head"><span class="pn">2-1</span><h2>페이즈 전환 — 체력 절반에서 한 번만</h2><p class="psub">HP가 절반 이하로 떨어지면 1→2 페이즈로 단방향 전환.</p></div><div class="split"><div class="code-col"><div class="cap">BossEnemy.java</div><pre><code>private void updatePhase() {
+    if (hp &lt;= maxHp / 2 &amp;&amp; phase == 1) {   // 절반 이하 + 아직 1페이즈
+        phase = 2;                         // 두 번 전환 방지(phase==1 조건)
+        speed = PHASE2_SPEED;              // 좌우 이동도 빨라짐(2→3)
+    }
+}</code></pre></div><div class="exp-col"><h4>왜 phase == 1 조건이 같이 있나?</h4>
+  <ul>
+    <li><span class="key">hp &lt;= maxHp/2</span>는 매 프레임 참이 되므로, 조건이 이것뿐이면 매 프레임 재실행됩니다.</li>
+    <li><span class="key">&amp;&amp; phase == 1</span>을 붙여 <b>딱 한 번만</b> 2페이즈로 넘어가게 합니다(단방향).</li>
+    <li>한 번에 절반을 넘겨 깎여도 "이하"라서 정상 전환됩니다.</li>
+  </ul></div></div></section><section class="part"><div class="part-head"><span class="pn">2-2</span><h2>부채꼴 탄막 — 각도를 등분하는 벡터링 ★</h2><p class="psub">아래 방향을 중심으로 일정 각도 범위를 균등 분할해 여러 발을 퍼뜨림.</p></div><div class="split"><div class="code-col"><div class="cap">BossEnemy.java</div><pre><code>private static final double SPREAD_ANGLE = Math.PI / 2.5;  // ≈72°
+private static final int    SPREAD_SPEED = 5;
+
+private void fireSpreadBullets(int cx, int cy, int count) {
+    for (int i = 0; i &lt; count; i++) {
+        double angle = (Math.PI/2)                 // 정아래(90°) 기준
+                     - SPREAD_ANGLE/2              // 왼쪽 끝으로
+                     + SPREAD_ANGLE * i / Math.max(count-1, 1); // 등분
+        int sx = (int)(Math.cos(angle) * SPREAD_SPEED);     // x속도
+        int sy = Math.max((int)(Math.sin(angle)*SPREAD_SPEED), 3); // y속도
+        bossBullets.add(new Bullet(cx-5, cy, sx, sy, false));
+    }
+}</code></pre></div><div class="exp-col"><h4>각도 → 속도 벡터 변환</h4>
+  <p>각 총알의 발사 <b>각도</b>를 구한 뒤, 삼각함수로 <b>(가로속도 sx, 세로속도 sy)</b> 벡터로 바꿉니다.</p>
+  <div class="math">중심 = π/2 (정아래)
+범위 = SPREAD_ANGLE (72°)
+i번째 각도 = π/2 − 36° + 72°×(i/(count−1))
+
+sx = cos(angle) × 5   (가로 성분)
+sy = sin(angle) × 5   (세로 성분)</div>
+  <ul>
+    <li><span class="key">Math.max(count-1, 1)</span> : count=1일 때 <b>0으로 나누기</b>를 막는 안전장치.</li>
+    <li><span class="key">Math.max(sy, 3)</span> : 거의 수평인 총알도 최소 3px은 내려오게 보장.</li>
+    <li>i=0 → 왼쪽 끝, i=count-1 → 오른쪽 끝 → 부채꼴이 균등하게 펼쳐집니다.</li>
+  </ul></div></div></section><section class="part"><div class="part-head"><span class="pn">2-3</span><h2>추적탄 — 플레이어를 향한 단위벡터 ★</h2><p class="psub">발사 순간 플레이어 방향을 구해 크기 1로 정규화한 뒤 속도를 곱함.</p></div><div class="split"><div class="code-col"><div class="cap">BossEnemy.java</div><pre><code>private void fireTrackingBullet(int cx, int cy, Player player) {
+    int dx = player.getX() + PLAYER_WIDTH/2 - cx;   // x 거리차
+    int dy = player.getY() + PLAYER_HEIGHT/2 - cy;  // y 거리차
+    double dist = Math.sqrt((double)dx*dx + (double)dy*dy); // 직선거리
+
+    if (dist &gt; 0) {                                  // 0나누기 방지
+        int sx = (int)(dx / dist * TRACKING_SPEED);  // 단위벡터 × 속도
+        int sy = (int)(dy / dist * TRACKING_SPEED);
+        bossBullets.add(new Bullet(cx-5, cy, sx, Math.max(sy,2), false));
+    }
+}</code></pre></div><div class="exp-col"><h4>벡터 정규화(단위벡터)가 핵심</h4>
+  <p>보스→플레이어 방향벡터 <span class="key">(dx, dy)</span>는 길이가 제각각입니다. 이걸 <b>거리(dist)로 나누면 길이 1짜리 방향</b>만 남고, 거기에 속도를 곱해 일정한 빠르기로 날립니다.</p>
+  <div class="math">dist = √(dx² + dy²)        ← 피타고라스
+방향(단위벡터) = (dx/dist, dy/dist)   ← 길이 1
+속도벡터 = 단위벡터 × 6
+sx = dx/dist × 6 ,  sy = dy/dist × 6</div>
+  <ul>
+    <li><span class="key">(double)dx*dx</span> : int 오버플로 방지용 형변환.</li>
+    <li><span class="key">if (dist > 0)</span> : 플레이어와 겹쳐 거리 0일 때 나누기 오류 방지.</li>
+    <li>발사 시점 방향으로 <b>고정</b>됩니다(유도 아님) — Bullet의 dx,dy가 final이라서.</li>
+  </ul></div></div></section><div class="pager"><a href="./enemy.html"><div class="lbl">← 이전</div><div class="nm">01. 적 시스템</div></a><a class="next" href="./player.html"><div class="lbl">다음 →</div><div class="nm">03. 플레이어 · 총알</div></a></div></main><footer>PILOT — Java Swing 2D Shooter · 강민석 · 임대훈</footer>
+<script>
+document.querySelectorAll('.code-col code').forEach(function(code){
+  var KW=new Set(('package import public private protected static final class abstract extends implements '+
+   'interface enum void int long double float boolean char new return if else for while do switch case break '+
+   'continue default this super null true false try catch throws synchronized').split(' '));
+  var t=code.textContent, re=/(\/\/[^\n]*)|("(?:[^"\\]|\\.)*")|(\b\d+\.?\d*[fFdDlL]?\b)|([A-Za-z_]\w*)/g, out='', last=0, m;
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  while((m=re.exec(t))){
+    out+=esc(t.slice(last,m.index));
+    var tok=m[0], cls=null;
+    if(m[1])cls='c-cmt'; else if(m[2])cls='c-str'; else if(m[3])cls='c-num';
+    else if(m[4]){ if(KW.has(tok))cls='c-kw'; else if(/^[A-Z]/.test(tok))cls='c-type'; }
+    out+= cls? '<span class="'+cls+'">'+esc(tok)+'</span>' : esc(tok);
+    last=re.lastIndex;
+  }
+  out+=esc(t.slice(last));
+  code.innerHTML=out;
+});
+</script>
+<style>
+.c-cmt{color:var(--code-cmt)} .c-kw{color:var(--code-kw);font-weight:600}
+.c-str{color:var(--code-str)} .c-num{color:var(--code-num)} .c-type{color:var(--code-type)}
+</style>
+</body></html>

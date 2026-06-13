@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>유틸 · 저장 · PILOT</title><style>
+:root{
+  --bg:#f6f7f9; --ink:#0f172a; --muted:#5b6472; --line:#e6e8ec;
+  --card:#ffffff; --accent:#2563eb; --accent-soft:#eaf0ff;
+  --code-bg:#0f172a; --code-ink:#e2e8f0; --code-cmt:#7dd3a0; --code-kw:#f0a868;
+  --code-str:#9ece6a; --code-num:#7aa2f7; --code-type:#7ad0c8;
+}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;
+  margin:0;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:rgba(246,247,249,.85);
+  backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:14px;height:58px}
+.brand{font-weight:800;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.brand small{font-weight:600;color:var(--muted);margin-left:8px;font-size:.8rem}
+.back{margin-left:auto;text-decoration:none;color:var(--accent);font-weight:600;font-size:.92rem}
+
+.hero{padding:54px 0 18px}
+.hero .eyebrow{color:var(--accent);font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{margin:.3em 0 .15em;font-size:2.2rem;letter-spacing:-.02em}
+.hero p{color:var(--muted);margin:0;max-width:60ch}
+
+ul.cards{list-style:none;padding:0;margin:28px 0 60px;display:grid;
+  grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:720px){ul.cards{grid-template-columns:1fr}}
+ul.cards a{display:flex;flex-direction:column;gap:6px;padding:18px 18px;border:1px solid var(--line);
+  border-radius:16px;text-decoration:none;color:inherit;background:var(--card);
+  box-shadow:0 1px 2px rgba(16,24,40,.04);transition:.15s}
+ul.cards a:hover{border-color:#c7d2fe;box-shadow:0 8px 24px rgba(37,99,235,.10);transform:translateY(-2px)}
+.cnum{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.08em}
+.ctitle{font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
+.cdesc{color:var(--muted);font-size:.9rem}
+.cfiles{margin-top:6px;font-size:.78rem;color:#94a0b0;font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.part{margin:42px 0;border-top:1px solid var(--line);padding-top:28px}
+.part:first-of-type{border-top:0}
+.part-head{margin-bottom:16px}
+.part-head .pn{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.78rem;font-weight:700;color:var(--accent);background:var(--accent-soft);
+  padding:3px 9px;border-radius:999px;margin-bottom:8px}
+.part-head h2{margin:.1em 0;font-size:1.4rem;letter-spacing:-.01em}
+.part-head .psub{color:var(--muted);margin:0}
+
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}
+@media(max-width:880px){.split{grid-template-columns:1fr}}
+.code-col{background:var(--code-bg);border-radius:14px;overflow:hidden;border:1px solid #1e293b}
+.code-col .cap{color:#93a4bd;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;
+  padding:9px 14px;border-bottom:1px solid #1e293b;background:#0b1220}
+.code-col pre{margin:0;padding:14px 16px;overflow-x:auto}
+.code-col code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--code-ink);
+  white-space:pre;line-height:1.65}
+.exp-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.exp-col h4{margin:.2em 0 .5em;font-size:.98rem}
+.exp-col p{margin:.5em 0;font-size:.93rem}
+.exp-col ul{margin:.4em 0;padding-left:1.1em}
+.exp-col li{margin:.35em 0;font-size:.92rem}
+.exp-col .key{background:var(--accent-soft);color:#1e3a8a;border-radius:6px;padding:0 5px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
+.exp-col .math{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px 12px;margin:10px 0;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.7;overflow-x:auto;white-space:pre}
+.warn{border-left:3px solid #f59e0b;background:#fffbeb;padding:8px 12px;border-radius:0 8px 8px 0;
+  font-size:.9rem;color:#92400e;margin:10px 0}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin:48px 0 64px;border-top:1px solid var(--line);padding-top:22px}
+.pager a{flex:1;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:12px;
+  padding:12px 16px;background:var(--card);transition:.15s}
+.pager a:hover{border-color:#c7d2fe}
+.pager .lbl{font-size:.74rem;color:var(--muted)}
+.pager .nm{font-weight:700;color:var(--accent)}
+.pager .next{text-align:right}
+.pager .ghost{visibility:hidden}
+footer{color:#9aa4b2;font-size:.82rem;text-align:center;padding:30px 0 50px}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="./index.html">PILOT<small>핵심 코드 발표</small></a><a class="back" href="./index.html">← 목차</a></div></header><main class="wrap"><div class="hero"><div class="eyebrow">07 / 유틸 · 저장</div><h1>유틸 · 저장</h1><p>프레임 기반 상수와 방어적 파일 입출력</p></div><section class="part"><div class="part-head"><span class="pn">7-1</span><h2>GameConstants — 모든 시간은 프레임 단위</h2><p class="psub">매직넘버를 없애고, 시간을 60FPS 기준 프레임 수로 통일.</p></div><div class="split"><div class="code-col"><div class="cap">GameConstants.java</div><pre><code>public static final int FPS   = 60;
+public static final int DELAY = 1000 / FPS;   // ≈16ms (한 프레임 대기)
+
+public static final int PLAYER_INVINCIBLE_DURATION = 90;  // 1.5초
+public static final int SHIELD_DURATION            = 240; // 4초
+public static final int ENEMY_SPAWN_MIN_INTERVAL   = 25;  // 스폰 하한</code></pre></div><div class="exp-col"><h4>프레임 기반 설계</h4>
+  <ul>
+    <li>60FPS 가정 하에 <b>90프레임=1.5초, 240프레임=4초</b>. 타이머를 정수 카운터로 단순화.</li>
+    <li>모든 필드가 <span class="key">public static final</span> → 인스턴스 불필요, 한 곳만 고치면 전체 반영.</li>
+  </ul>
+  <div class="warn">⚠ <code>DELAY=1000/FPS</code>는 정수 나눗셈이라 16(16.67 손실) — FPS를 바꾸면 미세 오차 가능.</div></div></div></section><section class="part"><div class="part-head"><span class="pn">7-2</span><h2>loadHighScore — 방어적 파싱</h2><p class="psub">파일이 없거나 깨져도 절대 게임이 멈추지 않게 0으로 안전 처리.</p></div><div class="split"><div class="code-col"><div class="cap">HighScoreFileIO.java</div><pre><code>public static int loadHighScore() {
+    Path path = Path.of(HIGH_SCORE_FILE);
+    if (!Files.exists(path)) return 0;             // 파일 없음
+    try {
+        String content = Files.readString(path, UTF_8).trim();
+        if (content.isEmpty()) return 0;
+        String cleaned = content.replaceAll(&quot;[^0-9-]&quot;, &quot;&quot;); // 숫자/− 만
+        if (cleaned.isEmpty()) return 0;
+        return Integer.parseInt(cleaned);
+    } catch (IOException | NumberFormatException e) {
+        return 0;                                   // 어떤 오류든 0
+    }
+}</code></pre></div><div class="exp-col"><h4>방어적 프로그래밍</h4>
+  <ul>
+    <li>파일이 없음 / 비었음 / 손상됨 / 숫자 아님 — <b>모든 경우 0 반환</b>해 게임이 죽지 않게 합니다.</li>
+    <li><span class="key">replaceAll("[^0-9-]","")</span> : 사용자가 손으로 수정하거나 공백·BOM이 섞여도 숫자만 추출.</li>
+    <li>두 예외를 <span class="key">|</span>로 한 번에 처리(멀티캐치).</li>
+  </ul></div></div></section><section class="part"><div class="part-head"><span class="pn">7-3</span><h2>saveIfHighScore — 갱신일 때만 쓰기</h2><p class="psub">기존 기록보다 높을 때만 파일을 덮어쓰고, 저장 실패도 무시.</p></div><div class="split"><div class="code-col"><div class="cap">HighScoreFileIO.java</div><pre><code>public static int saveIfHighScore(int score) {
+    int best = loadHighScore();
+    if (score &gt; best) { writeHighScore(score); return score; }
+    return best;
+}
+
+private static void writeHighScore(int score) {
+    try {
+        Files.writeString(Path.of(HIGH_SCORE_FILE),
+                          String.valueOf(score), UTF_8);
+    } catch (IOException e) { /* 무시: 게임 진행 우선 */ }
+}</code></pre></div><div class="exp-col"><h4>설계 의도</h4>
+  <ul>
+    <li>비교 → 갱신 시에만 쓰기 → 새 최고점수 반환을 한 메서드로 묶어 호출부(게임오버 화면)가 단순해집니다.</li>
+    <li>저장 실패(권한·디스크 문제)도 예외를 삼켜 <b>게임 진행을 우선</b>합니다.</li>
+  </ul></div></div></section><div class="pager"><a href="./score.html"><div class="lbl">← 이전</div><div class="nm">06. 점수 · 스테이지</div></a><a class="next" href="./main.html"><div class="lbl">다음 →</div><div class="nm">08. 메인 · 화면전환</div></a></div></main><footer>PILOT — Java Swing 2D Shooter · 강민석 · 임대훈</footer>
+<script>
+document.querySelectorAll('.code-col code').forEach(function(code){
+  var KW=new Set(('package import public private protected static final class abstract extends implements '+
+   'interface enum void int long double float boolean char new return if else for while do switch case break '+
+   'continue default this super null true false try catch throws synchronized').split(' '));
+  var t=code.textContent, re=/(\/\/[^\n]*)|("(?:[^"\\]|\\.)*")|(\b\d+\.?\d*[fFdDlL]?\b)|([A-Za-z_]\w*)/g, out='', last=0, m;
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  while((m=re.exec(t))){
+    out+=esc(t.slice(last,m.index));
+    var tok=m[0], cls=null;
+    if(m[1])cls='c-cmt'; else if(m[2])cls='c-str'; else if(m[3])cls='c-num';
+    else if(m[4]){ if(KW.has(tok))cls='c-kw'; else if(/^[A-Z]/.test(tok))cls='c-type'; }
+    out+= cls? '<span class="'+cls+'">'+esc(tok)+'</span>' : esc(tok);
+    last=re.lastIndex;
+  }
+  out+=esc(t.slice(last));
+  code.innerHTML=out;
+});
+</script>
+<style>
+.c-cmt{color:var(--code-cmt)} .c-kw{color:var(--code-kw);font-weight:600}
+.c-str{color:var(--code-str)} .c-num{color:var(--code-num)} .c-type{color:var(--code-type)}
+</style>
+</body></html>
